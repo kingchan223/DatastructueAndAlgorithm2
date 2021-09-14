@@ -46,7 +46,6 @@ public class Chaining {
 
     public int hashInsert(int dataValue){
         int hashCode = hashFunction(dataValue);
-        System.out.println("hashCode = " + hashCode);
         HashNode newNode = new HashNode(dataValue);
         newNode.next = table[hashCode];//newNode를 제일 앞에 저장힌다.
         table[hashCode] = newNode;//특정 인덱스에 있는 테이블 로우가 newNode를 가르키게 한다.
