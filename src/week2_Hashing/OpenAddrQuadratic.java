@@ -17,7 +17,7 @@ public class OpenAddrQuadratic {
             table[i]=-1;
     }
 
-    //곱하기 방법을 사용하는 hash function
+
     private int hashFunction(int d) {
         double temp = (double)d * 0.6180339887;
         double res = temp - Math.floor(temp);
@@ -141,7 +141,7 @@ public class OpenAddrQuadratic {
         int [] data = {10, 12, 18, 20, 22, 23, 26, 27, 42, 57};
         int dataSize = data.length;
 
-        System.out.println("\n *** Open Addressing - Linear Probing ***");
+        System.out.println("\n *** Open Addressing - Quadratic Probing ***");
 
         OpenAddrQuadratic myHash = new OpenAddrQuadratic(tableSize);
         // Insert

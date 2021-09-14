@@ -6,29 +6,57 @@ public class OpenAddrDoubleHasing {
 
     int [] table;
     int tableSize;
+    int m2;
     int numberOfItems;
 
     public OpenAddrDoubleHasing(int n) {
         tableSize = n;
         table = new int[tableSize];
         numberOfItems = 0;
+        m2 = findDemical(n);
         // -1 : null, -999 : deleted
         for (int i=0; i<tableSize; i++)
             table[i]=-1;
     }
 
-    //곱하기 방법을 사용하는 hash function
+    // 보조 해싱함수의 m'로 사용하기 위해 table사이즈 보다 작은 소수를 구하기
+    public static int findDemical(int tableSize){
+        int[] prime = new int[tableSize]; // 소수 저장
+        int pn=0; // 소수의 개수
+        boolean[] check = new boolean[tableSize+1];
+        for (int i=2; i<=tableSize; i++) {
+            if (!check[i]) {
+                prime[pn++] = i;
+                for (int j = i*i; j<=tableSize; j+=i) {
+                    check[j] = true;
+                }
+            }
+        }
+        int result = 0;
+        for(int i=tableSize-1; i>=2; i--){
+            if(!check[i]){
+                result = i;
+                break;
+            }
+        }
+        return result;
+    }
+
     private int firstHashFunction(int d) {
         return d%tableSize;
     }
 
-    private int secondHashFunction(int d) {
-        return d%tableSize;//나머지는 데이터가 저장될 인덱스가 된다.
+    private int secondHashFunction(int i, int d) {
+        return i*(d%m2);//나머지는 데이터가 저장될 인덱스가 된다.
+    }
+
+    private int hashFunction(int i, int d){
+        return (firstHashFunction(d) + secondHashFunction(i,d)) % tableSize;
     }
 
 	public int hashInsert(int d){
         if(loadfactor()>=threshold) enlargeTable();
-        int hashCode = hashFunction(d);
+        int hashCode = hashFunction(0, d);
         nOfHops = 1;
         //No Collision
         if(table[hashCode] == -1){
@@ -39,10 +67,11 @@ public class OpenAddrDoubleHasing {
         //Collision
         else{
             nOfHops++;
-            int probeIndex = (hashCode+1)%tableSize;
+            int i=1;
+            int probeIndex = hashFunction(i, d);
             while(table[probeIndex]!=-1 && table[probeIndex]!=999){
                 nOfHops++;
-                probeIndex = (probeIndex+1)%tableSize;
+                probeIndex = hashFunction(i++, d);
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -54,7 +83,7 @@ public class OpenAddrDoubleHasing {
 
 
 	public int hashSearch(int d){
-        int hashCode = hashFunction(d);
+        int hashCode = hashFunction(0, d);
         nOfHops = 1;
         //No Collision
         if(table[hashCode] == d){
@@ -63,10 +92,11 @@ public class OpenAddrDoubleHasing {
         //Collision
         else{
             nOfHops++;
-            int probeIndex = (hashCode+1)%tableSize;
+            int i=1;
+            int probeIndex = hashFunction(i, d);
             while(table[probeIndex]!=-1 && table[probeIndex]!=d){
                 nOfHops++;
-                probeIndex = (probeIndex+1)%tableSize;
+                probeIndex = hashFunction(i++, d);
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -77,7 +107,7 @@ public class OpenAddrDoubleHasing {
 
 
 	public int hashDelete(int d){
-        int hashCode = hashFunction(d);
+        int hashCode = hashFunction(0, d);
         nOfHops = 1;
 
         if(table[hashCode] == d){
@@ -88,10 +118,11 @@ public class OpenAddrDoubleHasing {
         //Collision
         else{
             nOfHops++;
-            int probeIndex = (hashCode+1)%tableSize;
+            int i=1;
+            int probeIndex = hashFunction(i, d);
             while(table[probeIndex]!=-1 && table[probeIndex]!=d){
                 nOfHops++;
-                probeIndex = (probeIndex+1)%tableSize;
+                probeIndex = hashFunction(i++, d);
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -103,7 +134,6 @@ public class OpenAddrDoubleHasing {
             else return -nOfHops;//못 찾은 경우
         }
     }
-
 
 	private void enlargeTable(){
         int[] oldTable = table;
@@ -117,9 +147,6 @@ public class OpenAddrDoubleHasing {
             if(oldTable[i]>=0) hashInsert(oldTable[i]);
         }
     }
-
-
-
 
     public double loadfactor() {
         return (double)numberOfItems/tableSize;
@@ -142,6 +169,7 @@ public class OpenAddrDoubleHasing {
         System.out.println("\n *** Open Addressing - Linear Probing ***");
 
         OpenAddrDoubleHasing myHash = new OpenAddrDoubleHasing(tableSize);
+
         // Insert
         int sumOfSuccess = 0;
         int sumOfFailure = 0;
