@@ -37,12 +37,12 @@ public class OpenAddrQuadratic {
         //Collision
         else{
             nOfHops++;
-            int i=1;
-            int probeIndex = (hashCode+(i*i))%tableSize;
+            int nOfCollision=1;
+            int probeIndex = (hashCode+(nOfCollision*nOfCollision))%tableSize;
             while(table[probeIndex]!=-1 && table[probeIndex]!=999){
                 nOfHops++;
-                i++;
-                probeIndex = (probeIndex+(i*i))%tableSize;
+                nOfCollision++;
+                probeIndex = (probeIndex+(nOfCollision*nOfCollision))%tableSize;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -98,7 +98,7 @@ public class OpenAddrQuadratic {
                     return 0;
             }
             if(table[probeIndex]==d){//찾은 경우
-                table[hashCode]= -999;
+                table[probeIndex]= -999;
                 numberOfItems--;
                 return nOfHops;
             }

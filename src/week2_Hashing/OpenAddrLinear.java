@@ -94,7 +94,7 @@ public class OpenAddrLinear {
                     return 0;
             }
             if(table[probeIndex]==d){//찾은 경우
-                table[hashCode]= -999;
+                table[probeIndex]= -999;
                 numberOfItems--;
                 return nOfHops;
             }
