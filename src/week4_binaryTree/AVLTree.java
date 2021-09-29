@@ -5,20 +5,20 @@ public class AVLTree extends BST {
     public AVLTree() {
         super();
     }
-
+    /* ----------------- insert ----------------- */
+    //노드를 추가할 때마다 imabalance를 검사해서 바로 교정한다.
     public void insert(char c){
-        Node r = insert(c, null, root);
-        //find x
+        Node r = insert(c, null, root);//일단은 트리에 노드를 추가한다.
+        //imbalance 시작 노드인 x를 찾자!
         Node p = r.parent;
         while(p!=null){
-            if(!isBalanced(p))
-                break;
+            if(!isBalanced(p)) break;
             p=p.parent;//balance가 맞으면 위로 올라간다.
         }
         Node x = p;
         Node y = null;
-        if(x!=null){
-            if(c<x.key){// c가 x.key보다 작다는 것은 왼쪽에 있다는 것임.
+        if(x!=null){//x==null이라면 root까지 imbalance가 없어서 rotate할 필요가 없다.
+            if(c<x.key){// c가 x.key보다 작다는 것은 왼쪽에 있다는 것임. -> LL or LR imbalance인 경우
                 y = x.left;
                 if(c<y.key){// LL imbalance
                     rotateRight(x);
@@ -27,7 +27,7 @@ public class AVLTree extends BST {
                     rotateLeft(y);
                     rotateRight(x);
                 }
-            }else{
+            }else{//RR or RL imbalance인 경우
                 y = x.right;
                 if(c>y.key){// RR imbalance
                     rotateLeft(x);
@@ -39,7 +39,17 @@ public class AVLTree extends BST {
             }
         }
     }
+    /* ---------------------------------------- */
 
+    /* ------------ isBalanced -------------- */
+    private boolean isBalanced(Node p) {
+        if(p==null) return true;
+        if(Math.abs(height(p.left)-height(p.right))<=1) return true;
+        return false;
+    }
+    /* ---------------------------------------- */
+
+    /* -------------- rotate -------------- */
     private Node rotateLeft(Node x) {//imbalance가 발생한 노드
         Node y = x.right;
         y.parent = x.parent;
@@ -54,9 +64,8 @@ public class AVLTree extends BST {
         x.right = y.left;
         if(y.left!=null) y.left.parent = x;
         y.left = x;
-        return y;//정점 반환
+        return y;
     }
-
     private Node rotateRight(Node x) {//imbalance가 발생한 노드
         Node y = x.left;
         y.parent = x.parent;
@@ -71,16 +80,46 @@ public class AVLTree extends BST {
         x.left = y.right;
         if(y.right!=null) y.right.parent = x;
         y.right = x;
-        return y;//정점 반환
+        return y;
     }
+    /* --------------------------------------- */
 
-    private boolean isBalanced(Node p) {
-        if(p==null)
-            return true;
-        if(Math.abs(height(p.left)-height(p.right))<=1)
-            return true;
-        else return false;
+    /* -------------- delete -------------- */
+    public Node AVLdelete(char c){
+        Node r = delete(c);
+        Node p = r.parent;
+        while(p!=null){
+            if(!isBalanced(p)) break;
+            p=p.parent;//balance가 맞으면 위로 올라간다.
+        }
+        Node x = p;
+        Node y = null;
+        if(x!=null){//x==null이라면 root까지 imbalance가 없어서 rotate할 필요가 없다.
+            if(c<x.key){// c가 x.key보다 작다는 것은 왼쪽에 있다는 것임. -> LL or LR imbalance인 경우
+                y = x.left;
+                if(c<y.key){// LL imbalance
+                    return rotateRight(x);
+                }
+                else{// LR imbalance
+                    rotateLeft(y);
+                    return rotateRight(x);
+                }
+            }else{//RR or RL imbalance인 경우
+                y = x.right;
+                if(c>y.key){// RR imbalance
+                    return rotateLeft(x);
+                }
+                else{// RL imbalance
+                    rotateRight(y);
+                    return rotateLeft(x);
+                }
+            }
+        }
+        return null;
     }
+    /* --------------------------------------- */
+
+
 
     public static void main(String[] args) {
         int inputSize = 26;
@@ -96,7 +135,7 @@ public class AVLTree extends BST {
         }
         System.out.println("Initial Skewed Tree");
         bt.showTree();
-        System.out.println("Max. Height = "+bt.height());
+        System.out.println("Height = "+bt.height());
         System.out.println("IPL = "+bt.IPL());
 
         /////////////
@@ -108,8 +147,10 @@ public class AVLTree extends BST {
         }
         System.out.println("AVL Tree");
         bt.showTree();
-        System.out.println("Max. Height = "+bt1.height());
+        System.out.println("Height = "+bt1.height());
         System.out.println("IPL = "+bt1.IPL());
+        bt1.AVLdelete('A');
+
 
     }
 }

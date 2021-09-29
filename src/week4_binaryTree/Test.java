@@ -8,34 +8,34 @@ public class Test extends BST {
 
     public void rotateTest(int n) {
         for(int i=0; i<n; i++){
-            Node p = root;
-            if(p!=null){
-                if(p.right!=null) rotateLeft(p);
+            Node x = root;
+            if(x!=null){
+                if(x.right!=null) rotateLeft(x);
                 else
-                    if(p.left!=null)
-                        rotateRight(p);
+                    if(x.left!=null)
+                        rotateRight(x);
             }
         }
     }
 
-    private Node rotateLeft(Node x) {//imbalance가 발생한 노드
+    private void rotateLeft(Node x) {//imbalance가 발생한 노드
         Node y = x.right;
-        y.parent = x.parent;
+        y.parent = x.parent;/* 1. y의 parent가 x의 parent를 보게한다.*/
         if (y.parent == null) {//rotate를 시도한 x가 root였을 시에
-            root = y;
+            root = y;//y가 root가 된다.
         }
-        else{
+        else{/* 2. 아직 x가 x.parent의 right인지 left인지 모르므로
+              아래에서 if문으로 확인한 뒤에 y를 left또는 right로 붙인다. */
             if(x==x.parent.left) x.parent.left = y;
             else x.parent.right = y;
         }
-        x.parent = y;
-        x.right = y.left;
-        if(y.left!=null) y.left.parent = x;
-        y.left = x;
-        return y;//정점 반환
+        x.parent = y;/*3.x의 parent를 y로 한다.*/
+        x.right = y.left;/* 4. y의 left를 x의 right로 옮긴다.*/
+        if(y.left!=null) y.left.parent = x;//y.left의 parent가 x임을 알려준다.
+        y.left = x;/* 5. y가 left로 x를 보게 한다.*/
     }
 
-    private Node rotateRight(Node x) {//imbalance가 발생한 노드
+    private void rotateRight(Node x) {//imbalance가 발생한 노드
         Node y = x.left;
         y.parent = x.parent;
         if (y.parent == null) {//rotate를 시도한 x가 root였을 시에
@@ -49,13 +49,13 @@ public class Test extends BST {
         x.left = y.right;
         if(y.right!=null) y.right.parent = x;
         y.right = x;
-        return y;//정점 반환
     }
 
     public static void main(String[] args) {
         int inputSize = 26;
         char[] data = new char[inputSize];
 
+        //data 초기화
         for(int i=0; i<inputSize; i++){
             data[i] = (char) ((int)'A'+i);
         }

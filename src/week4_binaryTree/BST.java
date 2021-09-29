@@ -10,13 +10,13 @@ public class BST {
         root=null;
         numNode = 0;
     }
-
     public void insert(char x) {
         insert(x, null, root);//null = parent of root
     }
-
     protected Node insert(char x, Node parentOfr, Node r) {//노드를 추가하고 추가된 노드를 반환해준다.
-        if (r==null) {//r이 null이라면 1.아직 비어있는 트리  2.맨 아래에 도달해서 parentOfr이 leaf이고, r은 null인 경우. 이렇게 두가지이다.
+        if (r==null) {//r이 null이라면
+            // 1.아직 비어있는 트리
+            // 2.맨 아래에 도달해서 parentOfr이 leaf이고, r은 null인 경우. 이렇게 두가지이다.
             if(parentOfr==null){// 그 중 아직 비어있는 트리라면
                 root = insertNode(x, null);//root로 추가한다.
                 return root;
@@ -133,6 +133,8 @@ public class BST {
         Deque<Node> que = new ArrayDeque<>();
         que.add(root);
         int depthLevel = 0;
+        //que에 부모 노드를 담고, temp에 옮긴 후 temp에서 poll()을 사용해 출력한 뒤,
+        //poll()로 반환된 노드의 lefr, right를 que담는 작업을 반복한다.
         while (que.peek()!=null) {
             Deque<Node> temp = new ArrayDeque<>();
             System.out.print("Depth-level "+depthLevel+" : ");
