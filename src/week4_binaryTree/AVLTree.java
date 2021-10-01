@@ -117,6 +117,85 @@ public class AVLTree extends BST {
         }
         return null;
     }
+
+//    public Node AVLdelete2(char c){//교수님 코드
+//        Node x = delete(c);
+//        Node y = null;
+//        Node z = null;
+//        Node w = null;
+//        System.out.println(">>> Return Node : "+x.toString()+"  "+height(x.left)+"  "+height(x.right));
+//        while(x!=null){
+//            System.out.println(">>> While-Loop : "+x.toString()+"  "+height(x.left)+"  "+height(x.right));
+//            if(!isBalanced(x)){
+//                if(height(x.left)>height(x.right)){
+//                    y = x.left;
+//                    if(y.left!=null){//LL
+//                        System.out.println(" >>> LL");
+//
+//                        z = y.left;
+//                        w = rotateRight(x);
+//                        System.out.println(" --- After");
+//                        showTree();
+//
+//                        if(w!=null)
+//                            System.out.println(" > Rotate returns >> "+w.toString());
+//                    }
+//
+//                    else{//LR
+//                        System.out.println(" >>> LR");
+//
+//                        z = y.right;
+//                        rotateLeft(y);
+//                        System.out.println(" --- After");
+//                        showTree();
+//                        System.out.println(" --- After");
+//                        showTree();
+//
+//                        if (w != null)
+//                            System.out.println(" > Rotate returns >>" + w.toString());
+//
+//                    }
+//                }
+//                else{
+//                    y = x.right;
+//                    if (y.left != null) {//RL
+//                        System.out.println(" >>> RL");
+//
+//                        z = y.left;
+//                        rotateRight(y);
+//                        System.out.println(" --- After");
+//                        showTree();
+//
+//                        w = rotateLeft(x);
+//                        System.out.println(" --- After");
+//                        showTree();
+//
+//                        if(w!=null)
+//                            System.out.println(" > Rotate returns >> " + w.toString());
+//                    }
+//                    else{//RR
+//                        System.out.println(" >>> RR");
+//                        z = y.right;
+//                        w = rotateLeft(y);
+//                        System.out.println(" --- After");
+//
+//                        showTree();
+//                        if(w!=null)
+//                            System.out.println(" > Rotate returns >>"+w.toString());
+//                    }
+//                }
+//                if(w.parent==null){
+//                    root = w;
+//                }
+//                x = w.parent;
+//                else{
+//                    x = x.parent;
+//                }/*5주차 13분 다시 보기*/
+//            }
+//        }
+//        return null;
+//    }
+
     /* --------------------------------------- */
 
 
