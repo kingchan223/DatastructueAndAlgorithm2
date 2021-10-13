@@ -1,7 +1,6 @@
 package week5;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 
 public class PathCompact {
@@ -41,7 +40,6 @@ public class PathCompact {
         parent = this;
         return this;
     }
-
     public PathCompact findSet(PathCompact node){
         //대표노드를 부모로 보지 않는 노드를 저장하는 que
         Deque<PathCompact> que = new ArrayDeque<PathCompact>();
@@ -55,7 +53,6 @@ public class PathCompact {
         }
         return p;
     }
-
     public PathCompact union(PathCompact other){
         PathCompact u = findSet(this);
         PathCompact v = findSet(other);
@@ -74,7 +71,6 @@ public class PathCompact {
             return u;
         }
     }
-
     public static void main(String[] args) {
 
         //data={ 0, 1, 2, 3, 4, 5, 6 }
@@ -108,3 +104,4 @@ public class PathCompact {
         }
     }
 }
+
