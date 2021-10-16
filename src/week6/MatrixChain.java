@@ -2,7 +2,7 @@ package week6;
 
 public class MatrixChain {
     int nOfMatrix;
-    int [] p;
+    int [] p;//{p0:2, p1:3, p2:4, p3:3, p4:5, p5:3, p6:4, p7:5, p8:3, p9:2, p10:4, p11:6, p12:5, p13:4, p14:3, p15:4}
     int count;
     int [][] memo;
 
@@ -25,6 +25,7 @@ public class MatrixChain {
         return count;
     }
 
+    //행렬 Ai.부터 Aj.까지 최소비용을 구한다.
     int matrixChain(int i, int j) {
         count++;
         if(i==j) return 0;
