@@ -5,11 +5,11 @@ import java.io.IOException;
 
 public class LCS {
 
-    public int len1;
-    public int len2;
-    public char[] char1;
-    public char[] char2;
-    public int[][] memo;
+    int len1;
+    int len2;
+    char[] char1;
+    char[] char2;
+    int[][] memo;
 
     public LCS(String str1, String str2) {
         init(str1, str2);
@@ -29,6 +29,7 @@ public class LCS {
         this.char2 = new char[len2+1];
 
         for (int i = 0; i < len1; i++)
+
             char1[i+1] = str1.charAt(i);
 
         for (int i = 0; i < len2; i++)
