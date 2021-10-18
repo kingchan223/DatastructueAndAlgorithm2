@@ -23,7 +23,6 @@ public class Tile2NdivoneBYtwo {
         else{
             memo[n] = RecurTail(n - 1) + RecurTail(n - 2);
             return  memo[n];
-
         }
     }
 

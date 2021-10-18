@@ -1,35 +1,64 @@
 package week2_Hashing;
-
-public class OpenAddrQuadratic {
+/*
+* 더블 해싱 교수님 방법
+* */
+public class OpenAddrDoubleHasingChar2 {
     int nOfHops =0;
     double threshold = 0.99;
-
-    int [] table;
+    char [] table;
     int tableSize;
+    int mprime;
     int numberOfItems;
-
-    public OpenAddrQuadratic(int n) {
+    public OpenAddrDoubleHasingChar2(int n) {
         tableSize = n;
-        table = new int[tableSize];
+        table = new char[tableSize];
         numberOfItems = 0;
         // -1 : null, -999 : deleted
         for (int i=0; i<tableSize; i++)
-            table[i]=-1;
+            table[i] = ' ';
+
+        mprime = findPrime(tableSize);
     }
 
+    // --- m보다작은 소수를 찾아주는 메소드 ---
+    private int findPrime(int m) {
+        for(int i=m-1; i>(m/2); i--){
+            if(isPrime(i)){
+                System.out.println("** M-prime = "+i);
+                return i;
+            }
+        }
+        return 0;
+    }
+    private boolean isPrime(int i) {
+        for(int j=2; j<(i/2); j++){
+            float x = (float) i/j;
+            int y=j;
+            if(x==y) return false;
+        }
+        return true;
+    }
+    // -------------------------------
 
-    private int hashFunction(int d) {
+    //m을 적용한 hashFunction1(곱하기 방식)
+    private int hashFunction1(char d) {
         double temp = (double)d * 0.6180339887;
         double res = temp - Math.floor(temp);
-        return (int)(res*tableSize);
+        return (int) (res * tableSize);
+    }
+    //m`을 적용한 hashFunction2(곱하기 방식)
+    private int hashFunction2(char d) {
+        double temp = (double)d * 0.6180339887;
+        double res = temp - Math.floor(temp);
+        return (int) (res * mprime);
     }
 
-	public int hashInsert(int d){
+	public int hashInsert(char d){
         if(loadfactor()>=threshold) enlargeTable();
-        int hashCode = hashFunction(d);
+        int hashCode = hashFunction1(d);
         nOfHops = 1;
-        //No Collision
-        if(table[hashCode] == -1){
+        //No Collision -> 충돌이 발상하지 않으면 hashF1만 사용한다.
+        if(table[hashCode] == ' '){
             table[hashCode] = d;
             numberOfItems++;
             return nOfHops;
@@ -38,11 +67,11 @@ public class OpenAddrQuadratic {
         else{
             nOfHops++;
             int nOfCollision=1;
-            int probeIndex = (hashCode+(nOfCollision*nOfCollision))%tableSize;
-            while(table[probeIndex]!=-1 && table[probeIndex]!=999){
+            int probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+            while(table[probeIndex]!=' ' && table[probeIndex]!='-'){
                 nOfCollision++;
                 nOfHops++;
-                probeIndex = (probeIndex+(nOfCollision*nOfCollision))%tableSize;
+                probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -52,8 +81,8 @@ public class OpenAddrQuadratic {
         }
     }
 
-	public int hashSearch(int d){
-        int hashCode = hashFunction(d);
+	public int hashSearch(char d){
+        int hashCode = hashFunction1(d);
         nOfHops = 1;
         //No Collision
         if(table[hashCode] == d){
@@ -63,11 +92,11 @@ public class OpenAddrQuadratic {
         else{
             nOfHops++;
             int nOfCollision=1;
-            int probeIndex = (hashCode+(nOfCollision*nOfCollision))%tableSize;
-            while(table[probeIndex]!=-1 && table[probeIndex]!=d){
+            int probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+            while(table[probeIndex]!=' ' && table[probeIndex]!=d){
                 nOfCollision++;
                 nOfHops++;
-                probeIndex = (probeIndex+(nOfCollision*nOfCollision))%tableSize;
+                probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -76,30 +105,28 @@ public class OpenAddrQuadratic {
         }
     }
 
-
-	public int hashDelete(int d){
-        int hashCode = hashFunction(d);
+	public int hashDelete(char d){
+        int hashCode = hashFunction1(d);
         nOfHops = 1;
 
         if(table[hashCode] == d){
-            table[hashCode]= -999;
+            table[hashCode]= '-';
             numberOfItems--;
             return nOfHops;
         }
         //Collision
         else{
             nOfHops++;
-            int nOfCollision = 1;
-            int probeIndex = (hashCode+(nOfCollision*nOfCollision))%tableSize;
-            while(table[probeIndex]!=-1 && table[probeIndex]!=d){
-                nOfCollision++;
+            int nOfCollision=1;
+            int probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+            while(table[probeIndex]!=' ' && table[probeIndex]!='-'){
                 nOfHops++;
-                probeIndex = (probeIndex+(nOfCollision*nOfCollision))%tableSize;
+                probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
             if(table[probeIndex]==d){//찾은 경우
-                table[probeIndex]= -999;
+                table[probeIndex]= '-';
                 numberOfItems--;
                 return nOfHops;
             }
@@ -107,15 +134,11 @@ public class OpenAddrQuadratic {
         }
     }
 
-//    public int collision(int hashCode){
-//
-//    }
-
 	private void enlargeTable(){
-        int[] oldTable = table;
+        char[] oldTable = table;
         int oldSize = tableSize;
         tableSize *= 2;
-        table = new int[tableSize];
+        table = new char[tableSize];
         for(int i=0; i<tableSize; i++){
             table[i]-=1;
         }
@@ -124,9 +147,6 @@ public class OpenAddrQuadratic {
         }
     }
 
-
-
-
     public double loadfactor() {
         return (double)numberOfItems/tableSize;
     }
@@ -134,20 +154,20 @@ public class OpenAddrQuadratic {
     public void showTable() {
         System.out.println("Current Hash Table : ");
         for (int i = 0; i<tableSize; i++)
-            System.out.print(table[i]+"  ");
+            System.out.println(i+":"+table[i]+"  ");
         System.out.println();
     }
-
 
     public static void main(String[] args) {
         int tableSize = 17;
 
-        int [] data = {10, 12, 18, 20, 22, 23, 26, 27, 42, 57};
+        char [] data = {'V', 'N', 'Y', 'Z', 'E', 'L', 'B', 'Q', 'A', 'P'};
         int dataSize = data.length;
 
-        System.out.println("\n *** Open Addressing - Quadratic Probing ***");
+        System.out.println("\n *** Open Addressing - Linear Probing ***");
 
-        OpenAddrQuadratic myHash = new OpenAddrQuadratic(tableSize);
+        OpenAddrDoubleHasingChar2 myHash = new OpenAddrDoubleHasingChar2(tableSize);
+
         // Insert
         int sumOfSuccess = 0;
         int sumOfFailure = 0;
@@ -162,6 +182,7 @@ public class OpenAddrQuadratic {
                 sumOfFailure += count;
         }
         myHash.showTable();
+
         System.out.println("\n\n [Insert] No. of Hops : Success ="+sumOfSuccess
                 + "  Failure = "+sumOfFailure+"   Max. Hop Count = "+ maxCount);
         System.out.println("\n Load Factors ="+myHash.loadfactor());
@@ -189,7 +210,7 @@ public class OpenAddrQuadratic {
         sumOfFailure = 0;
         maxCount = 0;
         for (int i =0; i<dataSize; i++) {
-            int count = myHash.hashSearch(data[i]+1);
+            int count = myHash.hashSearch(data[i]);
             if (count>=0) {
                 sumOfSuccess += count;
                 if (count>maxCount) maxCount = count;
@@ -207,7 +228,7 @@ public class OpenAddrQuadratic {
         sumOfFailure = 0;
         maxCount = 0;
         for (int i =0; i<dataSize; i++) {
-            int count = myHash.hashDelete(data[i]+1);
+            int count = myHash.hashDelete(data[i]);
             if (count>=0) {
                 sumOfSuccess += count;
                 if (count>maxCount) maxCount = count;
@@ -219,10 +240,7 @@ public class OpenAddrQuadratic {
         }
         System.out.println("\n\n [Delete] No. of Hops : Success ="+sumOfSuccess
                 + "  Failure = "+sumOfFailure+"   Max. Hop Count = "+ maxCount);
-
-
     }
-
 }
 
 

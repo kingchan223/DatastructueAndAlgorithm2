@@ -1,6 +1,7 @@
 package week2_Hashing;
 
 public class OpenAddrLinear {
+
     int nOfHops =0;
     double threshold = 0.99;
 

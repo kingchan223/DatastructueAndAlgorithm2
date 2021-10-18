@@ -13,15 +13,8 @@ public class LCS {
 
     public LCS(String str1, String str2) {
         init(str1, str2);
-//        for (char c : char1) {
-//            System.out.print(c+" ");
-//        }
-//        System.out.println();
-//        for (char c : char2) {
-//            System.out.print(c+" ");
-//        }
     }
-
+    //초기화
     private void init(String str1, String str2) {
         this.len1 = str1.length();
         this.len2 = str2.length();

@@ -20,6 +20,7 @@ public class OpenAddrDoubleHasing2 {
         mprime = findPrime(tableSize);
     }
 
+    // --- m보다작은 소수를 찾아주는 메소드 ---
     private int findPrime(int m) {
         for(int i=m-1; i>(m/2); i--){
             if(isPrime(i)){
@@ -29,7 +30,6 @@ public class OpenAddrDoubleHasing2 {
         }
         return 0;
     }
-
     private boolean isPrime(int i) {
         for(int j=2; j<(i/2); j++){
             float x = (float) i/j;
@@ -38,14 +38,15 @@ public class OpenAddrDoubleHasing2 {
         }
         return true;
     }
+    // -------------------------------
 
+    //m을 적용한 hashFunction1(곱하기 방식)
     private int hashFunction1(int d) {
-        //곰셉방법
         double temp = (double)d * 0.6180339887;
         double res = temp - Math.floor(temp);
         return (int) (res * tableSize);
     }
-
+    //m`을 적용한 hashFunction2(곱하기 방식)
     private int hashFunction2(int d) {
         double temp = (double)d * 0.6180339887;
         double res = temp - Math.floor(temp);
@@ -56,7 +57,7 @@ public class OpenAddrDoubleHasing2 {
         if(loadfactor()>=threshold) enlargeTable();
         int hashCode = hashFunction1(d);
         nOfHops = 1;
-        //No Collision
+        //No Collision -> 충돌이 발상하지 않으면 hashF1만 사용한다.
         if(table[hashCode] == -1){
             table[hashCode] = d;
             numberOfItems++;
@@ -120,7 +121,7 @@ public class OpenAddrDoubleHasing2 {
             nOfHops++;
             int nOfCollision=1;
             int probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
-            while(table[probeIndex]!=-1 && table[probeIndex]!=d){
+            while(table[probeIndex]!=-1 && table[probeIndex]!=-999){
                 nOfHops++;
                 probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
@@ -211,7 +212,7 @@ public class OpenAddrDoubleHasing2 {
         sumOfFailure = 0;
         maxCount = 0;
         for (int i =0; i<dataSize; i++) {
-            int count = myHash.hashSearch(data[i]+1);
+            int count = myHash.hashSearch(data[i]);
             if (count>=0) {
                 sumOfSuccess += count;
                 if (count>maxCount) maxCount = count;
@@ -228,8 +229,9 @@ public class OpenAddrDoubleHasing2 {
         sumOfSuccess = 0;
         sumOfFailure = 0;
         maxCount = 0;
-        for (int i =0; i<dataSize; i++) {
-            int count = myHash.hashDelete(data[i]+1);
+        for (int i = 0; i<dataSize; i++) {
+            System.out.println(i);
+            int count = myHash.hashDelete(data[i]);
             if (count>=0) {
                 sumOfSuccess += count;
                 if (count>maxCount) maxCount = count;
@@ -241,10 +243,7 @@ public class OpenAddrDoubleHasing2 {
         }
         System.out.println("\n\n [Delete] No. of Hops : Success ="+sumOfSuccess
                 + "  Failure = "+sumOfFailure+"   Max. Hop Count = "+ maxCount);
-
-
     }
-
 }
 
 

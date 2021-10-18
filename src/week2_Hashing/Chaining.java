@@ -79,6 +79,7 @@ public class Chaining {
 
         if(prev==null)
             return -nOfHops;
+
         //맨 앞에 있는 경우
         else if(prev.key==dataValue){
             table[hashCode] = prev.next;
@@ -91,11 +92,11 @@ public class Chaining {
         while(post!=null){
 
             if(post.key==dataValue){
-                prev.next =  post.next;//delete완료
+                prev.next = post.next;//delete완료
                 numberOfItems --;
                 return nOfHops;
             }
-            else{//prev, post둘다 한 칸씩 뒤로
+            else{//prev, post둘다 한 칸씩 앞으로
                 prev = post;
                 post = prev.next;
                 nOfHops++;

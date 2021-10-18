@@ -16,6 +16,7 @@ public class OpenAddrDoubleHasing {
         for (int i=0; i<tableSize; i++)
             table[i]=-1;
     }
+
     // 보조 해싱함수의 m'로 사용하기 위해 table사이즈 보다 작은 소수를 구하기
     public static int findDemical(int tableSize){
         int[] prime = new int[tableSize]; // 소수 저장

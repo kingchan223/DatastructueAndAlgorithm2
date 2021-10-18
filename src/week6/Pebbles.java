@@ -33,7 +33,7 @@ public class Pebbles {
         return count;
     }
 
-    //p번째 패턴일때의 pep을 반환해준다.
+    //p번째 패턴일때의 peb을 반환해준다.
     private int aPatternValue(int p, int n) {
         int retVal = 0;
         switch(n){
@@ -49,28 +49,28 @@ public class Pebbles {
         return retVal;
     }
 
-    //메모이제이션 사용 X
-    public int maxPebble(int n){
-        int max = -99999;
-        for (int j = 1; j <= 4; j++)
-            max = Math.max(pebble(n, j), max);
-        return max;
-    }
-
-    private int pebble(int n, int p){
-        count ++;
-        if(n==1) return aPatternValue(p,n);
-        else{
-            int max = -99999;
-            int k=0;
-            while(k<3 && nextPattern[p][k]!=0){//가능한 패턴을 모두 적용해본다.
-                int q = nextPattern[p][k];
-                max = Math.max(pebble(n-1, q), max);
-                k++;
-            }
-            return aPatternValue(p,n)+max;
-        }
-    }
+//    //메모이제이션 사용 X
+//    public int maxPebble(int n){
+//        int max = -99999;
+//        for (int j = 1; j <= 4; j++)
+//            max = Math.max(pebble(n, j), max);
+//        return max;
+//    }
+//
+//    private int pebble(int n, int p){
+//        count ++;
+//        if(n==1) return aPatternValue(p,n);
+//        else{
+//            int max = -99999;
+//            int k=0;
+//            while(k<3 && nextPattern[p][k]!=0){//가능한 패턴을 모두 적용해본다.
+//                int q = nextPattern[p][k];
+//                max = Math.max(pebble(n-1, q), max);
+//                k++;
+//            }
+//            return aPatternValue(p,n)+max;
+//        }
+//    }
 
 
     //메모이제이션 사용 O
@@ -114,8 +114,8 @@ public class Pebbles {
                          {0,11,12,7,4,8,-2,9,4,-4,3,7,10}};
         Pebbles myPeb = new Pebbles(input);
         for(int i=1; i<input[0].length; i++){
-            myPeb.reset();
-            System.out.print(">>> "+i+" : [Recursion] "+myPeb.maxPebble(i)+", Count = "+myPeb.getCount()+" ");
+//            myPeb.reset();
+//            System.out.print(">>> "+i+" : [Recursion] "+myPeb.maxPebble(i)+", Count = "+myPeb.getCount()+" ");
             myPeb.reset();
             System.out.println("===> [DP] "+myPeb.maxPebbleMemo(i)+", Count = "+myPeb.getCount());
         }
