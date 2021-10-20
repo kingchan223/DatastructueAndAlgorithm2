@@ -1,11 +1,10 @@
 package week2_Hashing;
 
 public class Chaining {
-
     int nOfHops = 0;
     HashNode [] table;
     int tableSize;
-    int numberOfItems;//같은 해쉬값에 속하는 노드가 몇개나 있는지?
+    int numberOfItems;
 
     public Chaining(int n){
         tableSize = n;
@@ -48,10 +47,9 @@ public class Chaining {
         int hashCode = hashFunction(dataValue);
         HashNode newNode = new HashNode(dataValue);
         newNode.next = table[hashCode];//newNode를 제일 앞에 저장힌다.
-        table[hashCode] = newNode;//특정 인덱스에 있는 테이블 로우가 newNode를 가르키게 한다.
-        numberOfItems++;//data추가
+        table[hashCode] = newNode;//newNode가 원래 맨앞에 있던 노드를 가르키게 한다.
+        numberOfItems++;
         nOfHops=1;
-
         return nOfHops;
     }
 
@@ -77,9 +75,7 @@ public class Chaining {
         HashNode prev = table[hashCode];
         nOfHops = 1;
 
-        if(prev==null)
-            return -nOfHops;
-
+        if(prev==null) return -nOfHops;
         //맨 앞에 있는 경우
         else if(prev.key==dataValue){
             table[hashCode] = prev.next;
@@ -90,13 +86,12 @@ public class Chaining {
         HashNode post = prev.next;
         nOfHops++;
         while(post!=null){
-
             if(post.key==dataValue){
                 prev.next = post.next;//delete완료
                 numberOfItems --;
                 return nOfHops;
             }
-            else{//prev, post둘다 한 칸씩 앞으로
+            else{//prev, post둘다 한 칸씩 뒤로
                 prev = post;
                 post = prev.next;
                 nOfHops++;
@@ -105,11 +100,10 @@ public class Chaining {
         return -nOfHops;
     }
 
-    //loadFactor는 적재율. 만약 10개의 공간이 있는 테이블에 7개의 데이커가 있다면 적재율은 0.7
+    //loadFactor는 적재율. 만약 10개의 공간이 있는 테이블에 7개의 데이터가 있다면 적재율은 0.7
     public double loadFactor(){
         return ((double)numberOfItems / tableSize);
     }
-
 
     public static void main(String[] args) {
         int tableSize = 16;

@@ -20,7 +20,7 @@ public class OpenAddrDoubleHasing2 {
         mprime = findPrime(tableSize);
     }
 
-    // --- m보다작은 소수를 찾아주는 메소드 ---
+    // --- m보다 작은 소수를 찾아주는 메소드 ---
     private int findPrime(int m) {
         for(int i=m-1; i>(m/2); i--){
             if(isPrime(i)){
@@ -30,6 +30,7 @@ public class OpenAddrDoubleHasing2 {
         }
         return 0;
     }
+
     private boolean isPrime(int i) {
         for(int j=2; j<(i/2); j++){
             float x = (float) i/j;
@@ -68,10 +69,12 @@ public class OpenAddrDoubleHasing2 {
             nOfHops++;
             int nOfCollision=1;
             int probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+            if(table[probeIndex] == d) return -1;
             while(table[probeIndex]!=-1 && table[probeIndex]!=999){
                 nOfCollision++;
                 nOfHops++;
                 probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+                if(table[probeIndex] == d) return -1;
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -124,6 +127,7 @@ public class OpenAddrDoubleHasing2 {
             while(table[probeIndex]!=-1 && table[probeIndex]!=-999){
                 nOfHops++;
                 probeIndex = (hashCode+nOfCollision*hashFunction2(d))%tableSize;
+                System.out.println(probeIndex);
                 if(probeIndex==hashCode)//한 바퀴를 돌아버린 경우
                     return 0;
             }
@@ -164,7 +168,8 @@ public class OpenAddrDoubleHasing2 {
     public static void main(String[] args) {
         int tableSize = 17;
 
-        int [] data = {10, 12, 18, 20, 22, 23, 26, 27, 42, 57};
+//        int [] data = {10, 12, 18, 20, 22, 23, 26, 27, 42, 57};
+        int [] data = {10, 11, 12, 13, 14, 15, 10, 10, 10, 11, 12, 13 };
         int dataSize = data.length;
 
         System.out.println("\n *** Open Addressing - Linear Probing ***");
