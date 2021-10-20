@@ -30,6 +30,7 @@ public class OpenAddrDoubleHasingChar2 {
         }
         return 0;
     }
+    
     private boolean isPrime(int i) {
         for(int j=2; j<(i/2); j++){
             float x = (float) i/j;

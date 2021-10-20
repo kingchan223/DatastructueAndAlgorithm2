@@ -9,15 +9,15 @@ public class SelectTest {
     public int getRecursiveCount() {
         return recursiveCount;
     }
-
+/*-------------------------일반 select-----------------------*/
+    //배열 data의 p에서 r의 범위에서 i번째 데이터를 찾고싶다.
     public int select(int[] data, int p, int r, int i){
         recursiveCount++;
-        if(p>r){
+        if(p>r){//시작 인덱스가 마지막 인덱스보다 크다면 진행할 수 없다.
             System.out.println("Invalid argument");
             return -1;
         }
         if(p==r) return data[p];
-
         int q = partition(data, p, r);
         int k = q-p;
         if(i<k) return select(data, p, q - 1, i);
@@ -39,13 +39,11 @@ public class SelectTest {
         swapData(data, pivot, right);
         return right;
     }
+/*---------------------------------------------------------------*/
 
-    private void swapData(int[] data, int left, int right) {
-        int temp = data[left];
-        data[left] = data[right];
-        data[right] = temp;
-    }
 
+
+/*------------------------ linear select ------------------------*/
     public int linearSelect(int[] data, int p, int r, int i){
         recursiveCount++;
 
@@ -53,9 +51,7 @@ public class SelectTest {
             System.out.println("Invalid argument");
             return -1;
         }
-        if(p==r){
-            return data[p];
-        }
+        if(p==r) return data[p];
         int q = linearPartition(data, p, r);
         int k = q-p;
         if(i<k) return linearSelect(data, p, q - 1, i);
@@ -63,8 +59,6 @@ public class SelectTest {
         else return linearSelect(data, q + 1, r, i - (q - p) - 1);
     }
 
-    //Partion과 거의 같지만 pivot을 찾는 부분만 다르다.
-    //Pivot쏠림을 최대한 막아서 퀵소트의 성능을 향상시킨다.
     private int linearPartition(int[] data, int p, int r) {
         int pValue = median(data, p, r);
         int index=0;
@@ -115,19 +109,27 @@ public class SelectTest {
             }
         }
     }
+/*-----------------------------------------------------------------*/
+
+    private void swapData(int[] data, int left, int right) {
+        int temp = data[left];
+        data[left] = data[right];
+        data[right] = temp;
+    }
+
 /*================================================================*/
     public static void main(String[] args) {
         int[] data = {5, 27, 24, 6, 35, 3, 7, 8, 18, 71, 77, 9, 11, 32, 21, 4};
 
         SelectTest s = new SelectTest();
         for(int i=0; i<data.length;i++){
-            System.out.println(s.select(data, 0, data.length-1, i)+"  ");
+            System.out.print(s.select(data, 0, data.length-1, i)+"  ");
         }
         System.out.println("# of Recursive Calls of Select = "+s.getRecursiveCount());
         System.out.println();
         s.resetCount();
         for(int i=0; i<data.length;i++){
-            System.out.println(s.linearSelect(data, 0, data.length-1, i)+"  ");
+            System.out.print(s.linearSelect(data, 0, data.length-1, i)+"  ");
         }
         System.out.println("# of Recursive Calls of LinearSelect = "+s.getRecursiveCount());
     }

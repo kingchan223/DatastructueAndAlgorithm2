@@ -35,6 +35,5 @@ public class SelectPerformance {
             System.out.println("# Recursive Calls of LinearSelect : "+s.getRecursiveCount());
 
         }
-
     }
 }

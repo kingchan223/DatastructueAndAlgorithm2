@@ -10,14 +10,15 @@ public class BST {
         root=null;
         numNode = 0;
     }
-    public void insert(char x) {
-        insert(x, null, root);//null = parent of root
+    public void insert(char x) {//사용하는 입장에서 노드를 반환하거나 하면 안되기 때문에.이와 같은 사용자용 메서드를 하나 만든다.
+        insert(x, null, root);//null = parent of root. 부모부터 차례대로 추가해줄 것이다.
     }
-    protected Node insert(char x, Node parentOfr, Node r) {//노드를 추가하고 추가된 노드를 반환해준다.
+
+    protected Node insert(char x, Node parentOfr, Node r) {//데이터 x를 추가한다.
         if (r==null) {//r이 null이라면
-            // 1.아직 비어있는 트리
-            // 2.맨 아래에 도달해서 parentOfr이 leaf이고, r은 null인 경우. 이렇게 두가지이다.
-            if(parentOfr==null){// 그 중 아직 비어있는 트리라면
+            // 1.아직 비어있는 트리(r==root)
+            // 2.맨 아래에 도달해서 parentOfr이 leaf이고, 그의 자식인 r은 null인 경우. 이렇게 두가지이다.
+            if(parentOfr==null){// 그 중 1.아직 비어있는 트리라면(r==root)
                 root = insertNode(x, null);//root로 추가한다.
                 return root;
             }
@@ -40,7 +41,7 @@ public class BST {
         }
     }
 
-    //노트를 직접 삽입하는 메소드
+    //parent의 아래에 노드를 추가하고, 추가된 노드를 반환.
     private Node insertNode(char x, Node parent) {
         Node newNode = new Node(x);
         newNode.parent = parent;
@@ -48,10 +49,19 @@ public class BST {
         return newNode;
     }
 
+    public void search(char x) {
+        if(search(root, x)==null){
+            System.out.println("Search에 실패하였습니다.");
+        }
+        else{
+            System.out.println("Search에 성공하였습니다.");
+        }
+    }
+
     //recursive하게 노드를 찾아가는 메서드
     public Node search(Node startNode, char x) {
         Node p = startNode;
-        if (p==null||p.key==x) return p;
+        if (p==null||p.key==x) return p;//null을 반환하면 못찾은거임
         else if (x<p.key) return search(p.left, x);
         else return search(p.right, x);
     }
@@ -66,11 +76,11 @@ public class BST {
         else return null;//r이 Null이라면 search에서 실패.
     }
 
-    //해당 delete메소드는 삭제한 노드 위치에 들어온 노드를 반환한다.
+    //해당 delete메소드는 삭제한 노드의 부모를 반환한다.
     private Node delete(Node r) {
         if (r.parent == null) {//삭제하려는 노드가 root 라면
             root = deleteNode(r);
-            return null;//null반환
+            return null;//root의 부모는 null이므로, null반환
         } else if (r == r.parent.left) {//삭제하려는 노드가 left 라면
             r.parent.left = deleteNode(r);//삭제
             if(r.parent.left!=null){//삭제한 노드가 leaf가 아니였다면.
@@ -79,7 +89,9 @@ public class BST {
             return r.parent;//leaf가 아니였다면 부모반환
         } else {//삭제하려는 노드가 right 라면
             r.parent.right = deleteNode(r);//삭제
-            if(r.parent.right!=null) return r.parent.right;//삭제한 노드가 leaf 였다면. null반환
+            if(r.parent.right!=null){
+                return r.parent.right;//삭제한 노드가 leaf 였다면. null반환
+            }
             return r.parent;//leaf가 아니였다면 부모반환
         }
     }
@@ -101,10 +113,15 @@ public class BST {
         }
         // case3: 2 child
         else{//predecessor의 key를 삭제노드 r에 복사한 후, predecessor를 삭제하는 방법
-            Node p = predecessor(r);
-            r.key = p.key;
-            delete(p);
-            return r;
+            Node s = predecessor(r);
+            r.key = s.key;
+            if(s == s.parent.left){
+                s.parent.left = s.right;
+            }
+            else{//s == s.parent.left
+                s.parent.right = s.right;
+            }
+            return s.parent;
         }
     }
 
