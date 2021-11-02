@@ -1,11 +1,11 @@
 package week3_selectAlgorithm;
-
-public class QuickSort {
+/* median7로 만들어보기 */
+public class QuickSortPrac1 {
     int nOfIteration;
     int[] data;
     int size;
 
-    public QuickSort(int[] myData){
+    public QuickSortPrac1(int[] myData){
         data = myData;
         size = data.length;
         nOfIteration = 0;
@@ -60,34 +60,32 @@ public class QuickSort {
     }
 
     private int median(int[] data, int p, int r) {
-        //만약 data의 길이가 5보다 작거나 같으면
-        // 바로 중앙값을 찾아서(median5)바로 반환한다.
-        if((r-p+1)<=5)
-            return median5(data, p, r);
-        //만약 data의 길이가 5보다 크다면. 길이가 5인 배열들로 나눈다.
-        float f = r-p+1;//f는 총 data의 길이이다.
-        int arrSize = (int) Math.ceil(f / 5);//arrSize는 나눠진 배열들의 개수이다.
+        //만약 data의 길이가 7보다 작거나 같으면 바로 중앙값을 찾아서(median7실행)바로 반환한다.
+        if((r-p+1)<=7)
+            return median7(data, p, r);
+        //만약 data의 길이가 7보다 크다면. 길이가 7인 배열들을 만든다.
+        float f = r-p+1;//f는 현재 우리가 중앙값을 찾아야 하는 배열의 길이이다.
+        int arrSize = (int) Math.ceil(f / 7);//arrSize는 나눠진 배열들의 개수이다.
         int[] medianArr = new int[arrSize];//medianValue에 나눈 배열들의 중앙값들이 저장될 것이다.
         for (int i = 0; i < arrSize; i++)//medianValue에 나눈 배열들의 중앙값들을 저장.
-            medianArr[i] = median5(data, p+5*i, Math.min(p+5*i+4, r));
+            medianArr[i] = median7(data, p+7*i, Math.min(p+7*i+6, r));
         return median(medianArr, 0, arrSize - 1);
     }
 
     //median에 들어오는 data의 길이는 5이하이다.
-    private int median5(int[] data, int p, int r) {
+    private int median7(int[] data, int p, int r) {
         if(p==r)//p==r은 길이가 1이므로, 바로 반환
             return data[p];
-        sort5(data, p, r);//5개의 이하의 데이터들을 정렬한 뒤
+        sort7(data, p, r);//7개의 이하의 데이터들을 정렬한 뒤
         return data[p + ((r - p + 1) / 2)];//가운데에 있는 값을 반환한다.
     }
 
-    private void sort5(int[] data, int p, int r) {
+    private void sort7(int[] data, int p, int r) {
         for(int i=p; i<r;i++)
             for(int j=i+1; j<=r; j++)
                 if(data[i]>data[j])
                     swapData(data, i, j);
     }
-
 
     ////////////////////////////////////////////////////////////////
     private void swapData(int[] data, int r, int index) {
@@ -98,7 +96,7 @@ public class QuickSort {
     ////////////////////////////////////////////////////////////////
     public static void main(String[] args) {
         int[] data = {5, 27, 24, 6, 35, 3, 7, 8, 18, 71, 77, 9, 11, 32, 21, 4};
-        QuickSort q = new QuickSort(data);
+        QuickSortPrac1 q = new QuickSortPrac1(data);
         q.qSort();
         q.showInfo();
     }

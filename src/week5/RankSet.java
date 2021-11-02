@@ -14,6 +14,13 @@ public class RankSet {
         this.parent = null;
     }
 
+    public RankSet makeSet(int k){//자기 자신을 부모로 하는 set을 만든다.
+        key = k;
+        rank = 0;
+        parent = this;
+        return this;
+    }
+
     public boolean equals(RankSet other){
         if(key==other.key) return true;
         else return false;
@@ -67,16 +74,16 @@ public class RankSet {
     public static void main(String[] args) {
         //data={ 0, 1, 2, 3, 4, 5, 6 }
         int dataSize =  7;
-        PathCompact[] element = new PathCompact[dataSize];
+        RankSet[] element = new RankSet[dataSize];
 
         for(int i=0; i<dataSize; i++){
-            element[i] = new PathCompact();
+            element[i] = new RankSet(i);
             element[i].makeSet(i);
             System.out.println(element[i].toString());
         }
 
         System.out.println("Union 0 & 1 ==> ");
-        PathCompact p = element[0].union(element[1]);
+        RankSet p = element[0].union(element[1]);
         System.out.println(p.toString());
 
         System.out.println("Union 2 & 1 ==> ");
@@ -96,3 +103,4 @@ public class RankSet {
         }
     }
 }
+

@@ -40,25 +40,24 @@ public class SelectTest {
         return right;
     }
 /*---------------------------------------------------------------*/
-
-
-
+///////////////////////////////////////////////////////////////////
 /*------------------------ linear select ------------------------*/
     public int linearSelect(int[] data, int p, int r, int i){
         recursiveCount++;
-
         if(p>r){
             System.out.println("Invalid argument");
             return -1;
         }
         if(p==r) return data[p];
         int q = linearPartition(data, p, r);
-        int k = q-p;
+        int k = q-p;//k는 q가 현재 p~r중 몇번째에 있는지를 알려준다.
         if(i<k) return linearSelect(data, p, q - 1, i);
         else if(i==k) return data[q];
         else return linearSelect(data, q + 1, r, i - (q - p) - 1);
     }
 
+    //p~r중 중앙값을 찾아준다. 그 찾은 중앙값(pValue)을 기준으로 앞에는 pValue보다 작은거 뒤에는 pValue보다 큰 데이터를 둔다.
+    //그리고 중앙값을 반환한다.
     private int linearPartition(int[] data, int p, int r) {
         int pValue = median(data, p, r);
         int index=0;
@@ -91,6 +90,7 @@ public class SelectTest {
         for(int i=0; i<arrSize; i++){
             medianArray[i] = median5(data, p+5*i, Math.min(p+5*i+4,r));
         }
+        //이작업을 원소의 개수가 5이하일 때까지 반복한다.
         return median(medianArray, 0, arrSize-1);
     }
     //원소 5개중 가운데 데이터 뽑아서 주기(5개 이하일 수도)

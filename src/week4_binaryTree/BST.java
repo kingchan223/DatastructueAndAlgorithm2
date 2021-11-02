@@ -10,38 +10,40 @@ public class BST {
         root=null;
         numNode = 0;
     }
+
     public void insert(char x) {//사용하는 입장에서 노드를 반환하거나 하면 안되기 때문에.이와 같은 사용자용 메서드를 하나 만든다.
         insert(x, null, root);//null = parent of root. 부모부터 차례대로 추가해줄 것이다.
     }
 
+    //재귀적으로 insert
     protected Node insert(char x, Node parentOfr, Node r) {//데이터 x를 추가한다.
-        if (r==null) {//r이 null이라면
+        if (r==null) {//r이 null 이라면
             // 1.아직 비어있는 트리(r==root)
-            // 2.맨 아래에 도달해서 parentOfr이 leaf이고, 그의 자식인 r은 null인 경우. 이렇게 두가지이다.
+            // 2.맨 아래에 도달해서 parentOfr 이 leaf node 이고, 그의 자식인 r은 null 인 경우.
             if(parentOfr==null){// 그 중 1.아직 비어있는 트리라면(r==root)
-                root = insertNode(x, null);//root로 추가한다.
+                root = insertNode(x, null);//root 로 추가한다.
                 return root;
             }
-            else{ // leaf에 도달해서 r이 null이고 parentOfr이 현재 leaf라면
-                if(x < parentOfr.key) {//추가될 노트의 key인 x가 부모보다 작다면
+            else{ // 2.leaf 에 도달해서 r이 null 이고 parentOfr 이 현재 leaf 라면
+                if(x < parentOfr.key) {//추가될 노트의 key 인 x가 부모보다 작다면
                     parentOfr.left = insertNode(x, parentOfr);//왼쪽에 붙여주고
                     return parentOfr.left;
                 }
-                else if(x > parentOfr.key){//추가될 노드의 key인 x가 부모보다 크다면
+                else if(x > parentOfr.key){//추가될 노드의 key 인 x가 부모보다 크다면
                     parentOfr.right = insertNode(x, parentOfr);//오른쪽에 붙여준다.
                     return parentOfr.right;
-                }
+                }//같다면 추가할 수 없다.
                 else return null;
             }
         }
-        else{//아직 leaf까지 도달하지 못했다면 recursive하게 타고 내려간다.
+        else{//아직 leaf 까지 도달하지 못했다면 recursive 하게 타고 내려간다.
             if(x < r.key) return insert(x, r, r.left);
             else if(x > r.key) return insert(x, r, r.right);
-            else return null;//key가 같은 경우라면 트리에 들어올 수 없으므로 null반환
+            else return null;//key 가 같은 경우라면 트리에 들어올 수 없으므로 null 반환
         }
     }
 
-    //parent의 아래에 노드를 추가하고, 추가된 노드를 반환.
+    //parent 의 아래에 노드를 추가하고, 추가된 노드를 반환.
     private Node insertNode(char x, Node parent) {
         Node newNode = new Node(x);
         newNode.parent = parent;
@@ -143,6 +145,7 @@ public class BST {
         return p;
     }
 
+    // TODO
     //level-order 출력
     public void showTree() {
         if(root==null)
@@ -161,14 +164,32 @@ public class BST {
             while(temp.peek()!=null){
                 Node e = temp.poll();
                 System.out.print(e.toString()+" ");
-                if(e.left!=null)
-                    que.add(e.left);
-                if(e.right!=null)
-                    que.add(e.right);
+                if(e.left!=null) que.add(e.left);
+                if(e.right!=null) que.add(e.right);
             }
             System.out.println();
             depthLevel++;
         }
+    }
+
+    public void showTreeRecur() {
+        Deque<Node> temp = new ArrayDeque<>();
+        temp.add(root);
+        showTreeRecur (temp);
+    }
+
+    public void showTreeRecur(Deque<Node> temp) {
+        if(temp.peek()==null) return;
+
+        Deque<Node> temp2 = new ArrayDeque<>();
+        while(temp.peek() != null) {
+            Node r = temp.poll();
+            if(r.left!=null) temp2.add(r.left);
+            if(r.right!=null) temp2.add(r.right);
+            System.out.print(r +" ");
+        }
+        System.out.println();
+        showTreeRecur(temp2);
     }
 
     private String toString(Node t) {
@@ -229,7 +250,11 @@ public class BST {
         bt.showTree();
         bt.delete('U');
         System.out.print("\nAfter deleting 'U' :");
+        System.out.println();
+        System.out.println("=======================");
         bt.showTree();
+        System.out.println("=======================");
+        bt.showTreeRecur();
 
     }
 
