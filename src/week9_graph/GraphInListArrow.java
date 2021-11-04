@@ -2,15 +2,15 @@ package week9_graph;
 
 import java.util.*;
 
-public class GraphInArray {
+public class GraphInListArrow {
 
     String graphName ;
     ArrayList<String> vertices ;
-    ArrayList<ArrayList<String>> adjacentList ;
+    ArrayList<LinkedList<String>> adjacentList ;
     int maxNumber = 0;
     boolean [] visited ;
 
-    public GraphInArray(int maxN) {
+    public GraphInListArrow(int maxN) {
         maxNumber = maxN ;
         visited = new boolean [maxNumber];
     }
@@ -28,9 +28,9 @@ public class GraphInArray {
     private void showGraphInList() {
         System.out.println("< "+graphName+" in AdjacentList >");
         for (int i=0; i<vertices.size();i++){
-            System.out.print(vertices.get(i)+" : ");
+            System.out.print(vertices.get(i)+"  ");
             for (String s : adjacentList.get(i))
-                System.out.print( s +", ");
+                System.out.print(" => "+ s );
             System.out.println();
         }
     }
@@ -38,7 +38,7 @@ public class GraphInArray {
     public void insertVertex(String s) {
         if (!vertices.contains(s)) {
             vertices.add(s);
-            adjacentList.add(new ArrayList<>());
+            adjacentList.add(new LinkedList<>());
         }
     }
 
@@ -47,12 +47,7 @@ public class GraphInArray {
         insertVertex(to);
 
         int f = vertices.indexOf(from);
-        int t = vertices.indexOf(to);
-
-        //adjacentList.get() : 정점을 가져오고
-        //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
         adjacentList.get(f).add(to);
-        adjacentList.get(t).add(from);
     }
 
     public void deleteVertex(String s) {
@@ -60,7 +55,6 @@ public class GraphInArray {
         if (index>=0) {
             for (int i=0; i<vertices.size(); i++) {
                 deleteEdge(s, vertices.get(i));
-                deleteEdge(vertices.get(i), s);
             }
             adjacentList.remove(index);
             vertices.remove(index);
@@ -88,53 +82,11 @@ public class GraphInArray {
 
         int index = vertices.indexOf(s);
         if (index>=0) {
-            result.addAll(adjacentList.get(index));
+            for (String v : adjacentList.get(index))
+                result.add(v);
         }
         return result;
     }
 
-    public void initVisited() {
-        for (int i=0; i<vertices.size();i++)
-            visited[i] = false;
-    }
 
-    public void DFS(String s) {
-        initVisited();
-        System.out.println("\n *** DFS Recursion *** \n");
-        DFSRecursion(s);
-    }
-    private void DFSRecursion(String s) {
-        int index = vertices.indexOf(s);
-        visited[index]=true;
-        System.out.println(s+" is visited ");
-        for (String v : adjacentList.get(index))
-            if (!visited[vertices.indexOf(v)])
-                DFSRecursion(v);
-    }
-    public void BFS(String s) {
-        initVisited();
-        System.out.println("\n *** BFS Iteration *** \n");
-        BFSIteration(s);
-    }
-    public void BFSIteration(String s) {
-        Deque<String> que = new ArrayDeque<String>();
-        visited[vertices.indexOf(s)]=true;
-        System.out.println(s+" is visited ");
-        que.add(s);
-        while (!que.isEmpty()) {
-            String v = que.poll();
-            int index = vertices.indexOf(v);
-            for (String u : adjacentList.get(index)) {
-                int ui = vertices.indexOf(u);
-                if (!visited[ui]) {
-                    visited[ui]=true;
-                    System.out.println(u+" is visited ");
-                    que.add(u);
-                }
-            }
-        }
-    }
 }
-
-
-

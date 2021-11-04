@@ -9,63 +9,73 @@ public class GraphBaseMain {
                 {3,5}, {1,6}, {5,6}, {4,6} };
         //--------------------------------------------------------------------------------
 
-//        GraphInMatrix myGM = new GraphInMatrix(maxNoVertex);
-//
-//        myGM.createGraph("TestGraph in Matrix");
-//        myGM.showGraph();
-//
-//        for (int i = 0; i<graphEdges.length; i++)
-//            myGM.insertEdge(vertices[graphEdges[i][0]-1],vertices[graphEdges[i][1]-1]);
-//        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
-//        myGM.showGraph();
-//
-//        myGM.deleteVertex("영희");
-//        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
-//        myGM.showGraph();
-//
-//        myGM.insertEdge("철수", "재상");
-//        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
-//        myGM.showGraph();
-//
-//        myGM.insertEdge("승우", "동건");
-//        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
-//        myGM.showGraph();
-//
-//
-//        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
-//        System.out.println(myGM.adjacent("철수"));
-//
-//        myGM.BFS(vertices[0]);
-//        myGM.DFS(vertices[0]);
-//
-//        ///////////////////////////////////////////////////////////////////
-//        System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-//
-//        GraphInList myGL = new GraphInList(maxNoVertex);
-//
-//        myGL.createGraph("TestGraph in List");
-//        myGL.showGraph();
-//
-//        for (int i = 0; i<graphEdges.length; i++)
-//            myGL.insertEdge(vertices[graphEdges[i][0]-1],vertices[graphEdges[i][1]-1]);
-//        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
-//        myGL.showGraph();
-//
-//        myGL.deleteVertex("영희");
-//        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
-//        myGL.showGraph();
-//
-//        myGL.insertEdge("철수", "재상");
-//        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
-//        myGL.showGraph();
-//
-//        myGL.insertEdge("승우", "동건");
-//        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
-//        myGL.showGraph();
-//
-//
-//        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
-//        System.out.println(myGL.adjacent("철수"));
+        GraphInMatrix myGM = new GraphInMatrix(maxNoVertex);
+
+        myGM.createGraph("TestGraph in Matrix");
+        myGM.showGraph();
+
+        for (int[] graphEdge : graphEdges)
+            myGM.insertEdge(vertices[graphEdge[0] - 1], vertices[graphEdge[1] - 1]);
+        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
+        myGM.showGraph();
+
+        myGM.deleteVertex("영희");
+        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
+        myGM.showGraph();
+
+        myGM.insertEdge("철수", "재상");
+        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
+        myGM.showGraph();
+
+        myGM.insertEdge("승우", "동건");
+        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
+        myGM.showGraph();
+
+
+        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
+        System.out.println(myGM.adjacent("철수"));
+
+        myGM.BFS(vertices[0]);
+        myGM.DFS(vertices[0]);
+
+        ///////////////////////////////////////////////////////////////////
+        System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+        GraphInList myGL = new GraphInList(maxNoVertex);
+
+        myGL.createGraph("TestGraph in List");
+        myGL.showGraph();
+
+        for (int i = 0; i<graphEdges.length; i++)
+            myGL.insertEdge(vertices[graphEdges[i][0]-1],vertices[graphEdges[i][1]-1]);
+        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
+        myGL.showGraph();
+
+        myGL.deleteVertex("영희");
+        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
+        myGL.showGraph();
+
+        myGL.insertEdge("철수", "재상");
+        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
+        myGL.showGraph();
+
+        myGL.insertEdge("승우", "동건");
+        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
+        myGL.showGraph();
+
+
+        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
+        System.out.println(myGL.adjacent("철수"));
+
+        myGL.BFS(vertices[0]);
+        myGL.DFS(vertices[0]);
+
+
+
+        ///////////////////////////////////////////////////////////////////
+        String [] vertices2 = { "seoul", "busan", "incheon", "ulsan", "daegu", "jeju", "daejeon", "kwangju"};
+        int [][] graphEdges2 = { {1,2}, {1,3}, {1,4}, {2,3},
+                {3,5}, {1,6}, {5,6}, {4,6} };
 
         ///////////////////////////////////////////////////////////////////
         System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -75,8 +85,8 @@ public class GraphBaseMain {
         myGA.createGraph("TestGraph in Array");
         myGA.showGraph();
 
-        for (int i = 0; i<graphEdges.length; i++)
-            myGA.insertEdge(vertices[graphEdges[i][0]-1],vertices[graphEdges[i][1]-1]);
+        for (int[] graphEdge : graphEdges)
+            myGA.insertEdge(vertices[graphEdge[0] - 1], vertices[graphEdge[1] - 1]);
         System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
         myGA.showGraph();
 
@@ -96,6 +106,71 @@ public class GraphBaseMain {
         System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
         System.out.println(myGA.adjacent("철수"));
 
-    }
+        myGA.BFS(vertices[0]);
+        myGA.DFS(vertices[0]);
 
+
+        ///////////////////////////////////////////////////////////////////
+        System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+        GraphInArrayArrow myGAA = new GraphInArrayArrow(maxNoVertex);
+
+        myGAA.createGraph("TestGraph in Array Arrow");
+        myGAA.showGraph();
+
+        for (int[] graphEdge2 : graphEdges2)
+            myGA.insertEdge(vertices2[graphEdge2[0] - 1], vertices2[graphEdge2[1] - 1]);
+        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
+        myGAA.showGraph();
+
+        myGAA.deleteVertex("영희");
+        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
+        myGAA.showGraph();
+
+        myGAA.insertEdge("철수", "재상");
+        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
+        myGAA.showGraph();
+
+        myGAA.insertEdge("승우", "동건");
+        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
+        myGAA.showGraph();
+
+
+        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
+        System.out.println(myGA.adjacent("철수"));
+
+        myGAA.BFS(vertices[0]);
+        myGAA.DFS(vertices[0]);
+
+        ///////////////////////////////////////////////////////////////////
+        System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+        GraphInListArrow myGLA = new GraphInListArrow(maxNoVertex);
+
+        myGLA.createGraph("TestGraph in List Arrow");
+        myGLA.showGraph();
+
+        for (int[] graphEdge : graphEdges)
+            myGLA.insertEdge(vertices[graphEdge[0] - 1], vertices[graphEdge[1] - 1]);
+        System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
+        myGLA.showGraph();
+
+        myGLA.deleteVertex("영희");
+        System.out.println("\n⬇️⬇️After delete 영희⬇️⬇️");
+        myGLA.showGraph();
+
+        myGLA.insertEdge("철수", "재상");
+        System.out.println("\n⬇️⬇️After add Edge 철수-재상⬇️⬇️");
+        myGLA.showGraph();
+
+        myGLA.insertEdge("승우", "동건");
+        System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
+        myGLA.showGraph();
+
+
+        System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
+        System.out.println(myGLA.adjacent("철수"));
+
+    }
 }
+

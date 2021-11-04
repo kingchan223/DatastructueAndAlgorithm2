@@ -1,8 +1,11 @@
 package week9_graph;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashSet;
 
-public class GraphInArray {
+public class GraphInArrayArrow {
 
     String graphName ;
     ArrayList<String> vertices ;
@@ -10,7 +13,7 @@ public class GraphInArray {
     int maxNumber = 0;
     boolean [] visited ;
 
-    public GraphInArray(int maxN) {
+    public GraphInArrayArrow(int maxN) {
         maxNumber = maxN ;
         visited = new boolean [maxNumber];
     }
@@ -52,7 +55,6 @@ public class GraphInArray {
         //adjacentList.get() : 정점을 가져오고
         //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
         adjacentList.get(f).add(to);
-        adjacentList.get(t).add(from);
     }
 
     public void deleteVertex(String s) {
