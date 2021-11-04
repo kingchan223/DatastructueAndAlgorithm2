@@ -30,7 +30,7 @@ public class GraphInList {
     }
 
     private void showGraphInList() {
-        System.out.println("\n< "+graphName+" in AdjacentList >");
+        System.out.println("< "+graphName+" in AdjacentList >");
         for (int i=0; i<vertices.size();i++){
             System.out.print(vertices.get(i)+"  ");
             for (String s : adjacentList.get(i))
@@ -53,6 +53,8 @@ public class GraphInList {
         int f = vertices.indexOf(from);
         int t = vertices.indexOf(to);
 
+        //adjacentList.get() : 정점을 가져오고
+        //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
         adjacentList.get(f).add(to);
         adjacentList.get(t).add(from);
 
