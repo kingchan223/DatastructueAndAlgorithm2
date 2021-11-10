@@ -6,9 +6,18 @@ public class GraphInArray {
 
     String graphName ;
     ArrayList<String> vertices ;
-    ArrayList<ArrayList<String>> adjacentList ;
+    ArrayList<TableEntry> adjacentArray ;
     int maxNumber = 0;
     boolean [] visited ;
+
+    private class TableEntry{
+        int arrSize;
+        ArrayList<String> arrayEntry;
+        private TableEntry(){
+            arrSize = 0;
+            arrayEntry = null;
+        }
+    }
 
     public GraphInArray(int maxN) {
         maxNumber = maxN ;
@@ -18,7 +27,7 @@ public class GraphInArray {
     public void createGraph(String name) {
         graphName = name;
         vertices = new ArrayList<>();
-        adjacentList = new ArrayList<>();
+        adjacentArray = new ArrayList<>();
     }
 
     public void showGraph() {
@@ -26,10 +35,10 @@ public class GraphInArray {
     }
 
     private void showGraphInList() {
-        System.out.println("< "+graphName+" in AdjacentList >");
+        System.out.println("< "+graphName+" in AdjacentArray >");
         for (int i=0; i<vertices.size();i++){
             System.out.print(vertices.get(i)+" : ");
-            for (String s : adjacentList.get(i))
+            for (String s : adjacentArray.get(i).arrayEntry)
                 System.out.print( s +", ");
             System.out.println();
         }
@@ -38,7 +47,7 @@ public class GraphInArray {
     public void insertVertex(String s) {
         if (!vertices.contains(s)) {
             vertices.add(s);
-            adjacentList.add(new ArrayList<>());
+            adjacentArray.add(new TableEntry ());
         }
     }
 
@@ -51,8 +60,8 @@ public class GraphInArray {
 
         //adjacentList.get() : 정점을 가져오고
         //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
-        adjacentList.get(f).add(to);
-        adjacentList.get(t).add(from);
+        adjacentArray.get(f).arrayEntry.add(to);
+        adjacentArray.get(t).arrayEntry.add(from);
     }
 
     public void deleteVertex(String s) {
@@ -62,7 +71,7 @@ public class GraphInArray {
                 deleteEdge(s, vertices.get(i));
                 deleteEdge(vertices.get(i), s);
             }
-            adjacentList.remove(index);
+            adjacentArray.remove(index);
             vertices.remove(index);
         }
     }
@@ -71,8 +80,8 @@ public class GraphInArray {
         int f = vertices.indexOf(from);
         int t = vertices.indexOf(to);
         if (f>=0 && t>=0) {
-            adjacentList.get(f).remove(to); ;
-            adjacentList.get(t).remove(from); ;
+            adjacentArray.get(f).arrayEntry.remove(to); ;
+            adjacentArray.get(t).arrayEntry.remove(from); ;
         }
     }
 
@@ -88,7 +97,7 @@ public class GraphInArray {
 
         int index = vertices.indexOf(s);
         if (index>=0) {
-            result.addAll(adjacentList.get(index));
+            result.addAll(adjacentArray.get(index).arrayEntry);
         }
         return result;
     }
@@ -107,7 +116,7 @@ public class GraphInArray {
         int index = vertices.indexOf(s);
         visited[index]=true;
         System.out.println(s+" is visited ");
-        for (String v : adjacentList.get(index))
+        for (String v : adjacentArray.get(index).arrayEntry)
             if (!visited[vertices.indexOf(v)])
                 DFSRecursion(v);
     }
@@ -124,7 +133,7 @@ public class GraphInArray {
         while (!que.isEmpty()) {
             String v = que.poll();
             int index = vertices.indexOf(v);
-            for (String u : adjacentList.get(index)) {
+            for (String u : adjacentArray.get(index).arrayEntry) {
                 int ui = vertices.indexOf(u);
                 if (!visited[ui]) {
                     visited[ui]=true;
