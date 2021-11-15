@@ -7,11 +7,11 @@ import java.util.HashSet;
 
 public class GraphInMatrix {
 
-    String graphName ;
-    ArrayList<String> vertices ;
-    int [][] adjacentMatrix ;
-    int maxNumber = 0;
-    boolean [] visited ;
+    protected String graphName ;
+    protected ArrayList<String> vertices ;
+    protected int [][] adjacentMatrix ;
+    protected int maxNumber = 0;
+    protected boolean [] visited ;
 
     public GraphInMatrix(int maxN) {
         maxNumber = maxN ;
@@ -39,10 +39,9 @@ public class GraphInMatrix {
     }
 
     //정점 추가
-    public void insertVertex(String s) {
-        if (!vertices.contains(s)) {
+    public void insertVertex(String s){
+        if (!vertices.contains(s))
             vertices.add(s);
-        }
     }
 
     //간선 추가

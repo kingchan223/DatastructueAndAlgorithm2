@@ -8,11 +8,11 @@ import java.util.LinkedList;
 
 public class GraphInList {
 
-    String graphName ;
-    ArrayList<String> vertices ;
-    ArrayList<LinkedList<String>> adjacentList ;
-    int maxNumber = 0;
-    boolean [] visited ;
+    protected String graphName ;
+    protected ArrayList<String> vertices ;
+    protected ArrayList<LinkedList<String>> adjacentList ;
+    protected int maxNumber = 0;
+    protected boolean [] visited ;
 
     public GraphInList(int maxN) {
         maxNumber = maxN ;
