@@ -1,17 +1,20 @@
-package week9_graph;
+package week11;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 public class GraphInListArrow {
 
     protected ArrayList<String> vertices ;
     protected ArrayList<LinkedList<String>> adjacentList ;
-    protected int maxNumber = 0;
+    protected int verNum;
     protected boolean [] visited ;
 
-    public GraphInListArrow(int maxN) {
-        maxNumber = maxN ;
-        visited = new boolean [maxNumber];
+    public GraphInListArrow(int verNum) {
+        this.verNum = verNum ;
+        visited = new boolean [verNum];
+        createGraph();
     }
 
     public void createGraph() {
@@ -40,38 +43,35 @@ public class GraphInListArrow {
     }
 
     public void insertEdge(String from, String to) {
-        insertVertex(from);
-        insertVertex(to);
-
-        int f = vertices.indexOf(from);
-        adjacentList.get(f).add(to);
+//        insertVertex(from);
+//        insertVertex(to);
+//
+//        int f = vertices.indexOf(from);
+//        adjacentList.get(f).add(to);
     }
 
     public void deleteVertex(String s) {
-        int index = vertices.indexOf(s);
-        if (index>=0) {
-            for (int i=0; i<vertices.size(); i++) {
-                deleteEdge(s, vertices.get(i));
-            }
-            adjacentList.remove(index);
-            vertices.remove(index);
-        }
+//        int index = vertices.indexOf(s);
+//        if (index>=0) {
+//            for (int i=0; i<vertices.size(); i++) {
+//                deleteEdge(s, vertices.get(i));
+//            }
+//            adjacentList.remove(index);
+////            vertices.remove(index);
+//        }
     }
 
     public void deleteEdge(String from, String to) {
-        int f = vertices.indexOf(from);
-        int t = vertices.indexOf(to);
-        if (f>=0 && t>=0) {
-            adjacentList.get(f).remove(to); ;
-            adjacentList.get(t).remove(from); ;
-        }
+//        int f = vertices.indexOf(from);
+//        int t = vertices.indexOf(to);
+//        if (f>=0 && t>=0) {
+//            adjacentList.get(f).remove(to);
+//            adjacentList.get(t).remove(from); ;
+//        }
     }
 
     public boolean isEmpty() {
-        if (vertices.size()==0)
-            return true;
-        else
-            return false;
+        return vertices.size() == 0;
     }
 
     public  HashSet<String> adjacent(String s){

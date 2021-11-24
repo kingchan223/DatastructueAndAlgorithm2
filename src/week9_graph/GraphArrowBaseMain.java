@@ -35,7 +35,7 @@ public class GraphArrowBaseMain {
         ///////////////////////////////////////////////////////////////////
         System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         GraphInListArrow myGLA = new GraphInListArrow(maxNoVertex);
-        myGLA.createGraph("TestGraph in List Arrow");
+        myGLA.createGraph();
         myGLA.showGraph();
         for (int[] graphEdge2 : graphEdges2)
             myGLA.insertEdge(vertices2[graphEdge2[0] - 1], vertices2[graphEdge2[1] - 1]);

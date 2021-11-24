@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 public class GraphInList {
 
-    protected String graphName ;
     protected ArrayList<String> vertices ;
     protected ArrayList<LinkedList<String>> adjacentList ;
     protected int maxNumber = 0;
@@ -17,10 +16,10 @@ public class GraphInList {
     public GraphInList(int maxN) {
         maxNumber = maxN ;
         visited = new boolean [maxNumber];
+        createGraph();
     }
 
-    public void createGraph(String name) {
-        graphName = name;
+    public void createGraph() {
         vertices = new ArrayList<>();
         adjacentList = new ArrayList<>();
     }
@@ -30,7 +29,6 @@ public class GraphInList {
     }
 
     private void showGraphInList() {
-        System.out.println("< "+graphName+" in AdjacentList >");
         for (int i=0; i<vertices.size();i++){
             System.out.print(vertices.get(i)+"  ");
             for (String s : adjacentList.get(i))
@@ -57,7 +55,6 @@ public class GraphInList {
         //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
         adjacentList.get(f).add(to);
         adjacentList.get(t).add(from);
-
     }
 
     public void deleteVertex(String s) {
@@ -82,10 +79,8 @@ public class GraphInList {
     }
 
     public boolean isEmpty() {
-        if (vertices.size()==0)
-            return true;
-        else
-            return false;
+        if (vertices.size()==0) return true;
+        else return false;
     }
 
     public  HashSet<String> adjacent(String s){
@@ -109,6 +104,7 @@ public class GraphInList {
         System.out.println("\n *** DFS Recursion *** \n");
         DFSRecursion(s);
     }
+
     private void DFSRecursion(String s) {
         int index = vertices.indexOf(s);
         visited[index]=true;

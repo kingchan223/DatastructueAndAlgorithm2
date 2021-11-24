@@ -1,85 +1,94 @@
 package week11;
 
-import week9_graph.GraphInList;
-import week9_graph.GraphInMatrix;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 
-public class TopologicalSortInList extends GraphInList {
+public class TopologicalSortInList extends GraphInListArrow {
+
+    Queue<Integer> q;
+    int[] entryLevel;
 
     public TopologicalSortInList(int maxN) {
         super(maxN);
+        entryLevel = new int[verNum];
+        for (int i=0; i<vertices.size(); i++) {
+            entryLevel[i] = 0;
+        }
+        q = new LinkedList<>();
     }
 
     public void TPSort1(){
-        String[] A = new String[vertices.size()];
+        for (int i=0; i< vertices.size(); i++)
+            if(entryLevel[i]==0) q.add(i);
+
+        ArrayList<String> A = new ArrayList<>();
         int nOfVertices = vertices.size();
 
-        for (int i = 0; i < nOfVertices; i++) {
-            A[i] = getNextNode();
-            deleteVertex(A[i]);
-            showGraph();
+        while(!q.isEmpty()){
+            Integer now = q.poll();
+
+            String nowStr = vertices.get(now);
+            A.add(nowStr);
+            deleteVertex(nowStr);
         }
 
-        System.out.println(">>> Start");
         for (int i = 0; i < nOfVertices; i++)
-            System.out.println("=> "+A[i]);
+            System.out.println("=> "+A.get(i));
         System.out.println();
     }
 
-    private String getNextNode(){
-        for (int i = 0; i < vertices.size(); i++) {
-            int tempSum = 0;
-            for(int j=0; j<vertices.size(); j++)
-                tempSum+=adjacentMatrix[j][i];
-            if(tempSum == 0)
-                return vertices.get(i);
-        }
-        return null;
+    //override
+    public void insertEdge(String from, String to) {
+        insertVertex(from);
+        insertVertex(to);
+
+        int f = vertices.indexOf(from);
+        adjacentList.get(f).add(to);
+        //진입차수 올리기
+        int t = vertices.indexOf(to);
+        System.out.println(t);
+        entryLevel[t] += 1;
     }
 
-    public void TPSort2(){
-        LinkedList<String> R = new LinkedList<>();
-        boolean[] visited = new boolean[vertices.size()];
-        Arrays.fill(visited, false);
-        for(String s: vertices){
-            if(visited[vertices.indexOf(s)]==false)
-                dfsTS(visited, s, R);
+    //override
+    public void deleteVertex(String s) {
+        int index = vertices.indexOf(s);
+        if (index>=0) {
+            for (int i=0; i<vertices.size(); i++) {
+                deleteEdge(s, vertices.get(i));
+            }
         }
     }
 
-    private LinkedList<String> dfsTS(boolean[] visited, String s, LinkedList<String> R){
-        visited[vertices.indexOf(s)]=true;
-        for(String x : adjacent(s))
-            if(visited[vertices.indexOf(x)]==false)
-                dfsTS(visited, x, R);
-        System.out.println(s + " is added a the first");
-        R.addFirst(s);
-        return R;
+    //override
+    public void deleteEdge(String from, String to) {
+        int f = vertices.indexOf(from);
+        int t = vertices.indexOf(to);
+        if (f>=0 && t>=0) {
+            adjacentList.get(f).remove(to);
+            adjacentList.get(t).remove(from);
+            entryLevel[t] -= 1;
+            if(entryLevel[t] == 0) q.add(t);
+        }
     }
+
 
     public static void main(String[] args) {
-        int maxNoVertex = 10;
-        String[] vertices = {"물을 붓기", "점화 하기", "봉지 뜯기", "라면 넣기", "스프 넣기", "계란 넣기"};
+        String[] vertices = {"물을 붓기", "점화 하기",
+                            "봉지 뜯기", "라면 넣기",
+                            "스프 넣기", "계란 넣기"};
         int[][] graphEdges = {
                 {0, 1}, {1, 3}, {1, 4}, {1, 5}, {2, 3}, {2, 4}, {3, 5}, {4, 5}
         };
-        TopologicalSortInList myTO = new TopologicalSortInList(maxNoVertex);
-        myTO.createGraph("Topological Sort1");
+        TopologicalSortInList myTO = new TopologicalSortInList(vertices.length);
         for (int i = 0; i < graphEdges.length; i++)
             myTO.insertEdge(vertices[graphEdges[i][0]], vertices[graphEdges[i][1]]);
+        for (int i = 0; i < vertices.length; i++)
+            myTO.insertVertex(vertices[i]);
 
-        myTO.showGraph();
         System.out.println("Topological Sort1 : start");
         myTO.TPSort1();
-
-        TopologicalSortInList myTO2 = new TopologicalSortInList(maxNoVertex);
-        myTO2.createGraph("Topological Sort1");
-        for (int i = 0; i < graphEdges.length; i++)
-            myTO2.insertEdge(vertices[graphEdges[i][0]], vertices[graphEdges[i][1]]);
-        myTO2.showGraph();
-        System.out.println("Topological Sort2 : start ");
-        myTO2.TPSort2();
     }
 }

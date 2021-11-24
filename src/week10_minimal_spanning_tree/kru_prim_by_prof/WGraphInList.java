@@ -5,11 +5,15 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class WGraphInList {
+    protected String graphName ;
+    protected ArrayList<String> vertices ;
+    protected ArrayList<LinkedList<EdgeElement>> adjacentList ;
+    protected int maxNumber = 0;
 
     public class EdgeElement {
-        String source ;
-        String destination ;
-        int weight ;
+        public String source ;
+        public String destination ;
+        public int weight ;
 
         public EdgeElement (String s, String d, int w){
             source = s;
@@ -22,10 +26,6 @@ public class WGraphInList {
         }
     }
 
-    String graphName ;
-    ArrayList<String> vertices ;
-    ArrayList<LinkedList<EdgeElement>> adjacentList ;
-    int maxNumber = 0;
 
     public WGraphInList(int maxN) {
         maxNumber = maxN ;

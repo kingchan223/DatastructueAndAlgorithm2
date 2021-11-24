@@ -43,7 +43,7 @@ public class GraphBaseMain {
 
         GraphInList myGL = new GraphInList(maxNoVertex);
 
-        myGL.createGraph("TestGraph in List");
+        myGL.createGraph();
         myGL.showGraph();
 
         for (int i = 0; i<graphEdges.length; i++)
@@ -147,7 +147,7 @@ public class GraphBaseMain {
 
         GraphInListArrow myGLA = new GraphInListArrow(maxNoVertex);
 
-        myGLA.createGraph("TestGraph in List Arrow");
+        myGLA.createGraph();
         myGLA.showGraph();
 
         for (int[] graphEdge : graphEdges)

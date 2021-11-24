@@ -59,7 +59,7 @@ public class GraphInArray {
         int t = vertices.indexOf(to);
 
         //adjacentList.get() : 정점을 가져오고
-        //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
+        //adjacentList.get().arrayEntry.add() : 정점의 링크드 리스트에 추가한다.
         adjacentArray.get(f).arrayEntry.add(to);
         adjacentArray.get(t).arrayEntry.add(from);
     }
@@ -112,6 +112,7 @@ public class GraphInArray {
         System.out.println("\n *** DFS Recursion *** \n");
         DFSRecursion(s);
     }
+
     private void DFSRecursion(String s) {
         int index = vertices.indexOf(s);
         visited[index]=true;
@@ -120,11 +121,13 @@ public class GraphInArray {
             if (!visited[vertices.indexOf(v)])
                 DFSRecursion(v);
     }
+
     public void BFS(String s) {
         initVisited();
         System.out.println("\n *** BFS Iteration *** \n");
         BFSIteration(s);
     }
+
     public void BFSIteration(String s) {
         Deque<String> que = new ArrayDeque<String>();
         visited[vertices.indexOf(s)]=true;
