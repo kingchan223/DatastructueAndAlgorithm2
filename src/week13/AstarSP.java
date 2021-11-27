@@ -1,11 +1,9 @@
 package week13;
 
-import week10_minimal_spanning_tree.prim.Edge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.PriorityQueue;
 
 public class AstarSP {
     private static final double INF =999_999_999;
@@ -13,7 +11,7 @@ public class AstarSP {
     char start;
     char goal;
     HashMap<Character, Vertex> open;
-    ArrayList<Vertex> closed;
+    HashMap<Character, Vertex> closed;
     ArrayList<Vertex> path;
     HashMap<Character, ArrayList<Vertex>> adjacentVertexes;
 
@@ -22,7 +20,7 @@ public class AstarSP {
         this.start = start;
         this.goal = goal;
         open = new LinkedHashMap<>();
-        closed = new ArrayList<>();
+        closed = new LinkedHashMap<>();
         path = new ArrayList<>();
         adjacentVertexes = new LinkedHashMap<>();
     }
@@ -53,6 +51,8 @@ public class AstarSP {
             double tempGx = 0;
             //nowV에 연결된 정점들의 f(x)를 비교하여 최적의 값을 다음 경로로 설정환다.
             for (Vertex linkedV : linkedVs) {//{A, G}
+                //이미 검사한 노드(closed)는 건너 뛴다.
+                if(closed.get(linkedV.vName)!=null) continue;
                 double tempFx = f(nowV.x, nowV.y, linkedV.x, linkedV.y, nowGx);
                 if (nowFx > tempFx) {
                     nowFx = tempFx;
@@ -60,23 +60,21 @@ public class AstarSP {
                     tempGx =  g(nowV.x, nowV.y, linkedV.x, linkedV.y, nowGx);
                 } else {
                     Vertex remove = open.remove(linkedV.vName);
-                    closed.add(remove);
+                    closed.put(remove.vName, remove);
                 }
             }
             nowV = next;
+            nowGx = tempGx;
+            nowV.weight = nowGx;
+            path.add(nowV);
             if(nowV.vName == goal) break;
-            else{
-                path.add(nowV);
-                nowGx = tempGx;
-            }
         }
     }
 
     public void showSP(){
-        System.out.print(start+" --> ");
+        System.out.print(start+"(0) --> ");
         for (Vertex vertex : path)
-            System.out.print(vertex.vName+" --> ");
-        System.out.print(goal);
+            System.out.print(vertex.vName+"("+vertex.weight+") --> ");
     }
     //매력함수 + 휴리스틱함수
     public double f(int fromX , int fromY, int toX, int toY, double preGx){
@@ -97,11 +95,11 @@ public class AstarSP {
 
         //{4, 6, 'A'}라면 이차원 좌표계 (4,6)에 정점 A가 존재한다.
         int[][] vertexInfo = {{4, 6, 'A'}, {0, 6, 'B'}, {3, 3, 'C'},
-                              {5, 3, 'D'}, {5, 0, 'E'}, {4, 0, 'F'}, {0, 0, 'G'}};
+                {5, 3, 'D'}, {5, 0, 'E'}, {4, 0, 'F'}, {0, 0, 'G'}};
         //{'B', 'A'} 라면 B와 A 사이에 무향 간선이 존재
         char[][] edgeInfo = {{'B', 'A'}, {'B', 'G'}, {'A', 'C'},
-                             {'A', 'D'}, {'C', 'D'}, {'C', 'F'}, {'D', 'E'},
-                             {'F', 'E'}, {'G', 'F'}};
+                {'A', 'D'}, {'C', 'D'}, {'C', 'F'}, {'D', 'E'},
+                {'F', 'E'}, {'G', 'F'}};
 
         astarSP.insertVertex(vertexInfo);
         astarSP.insertEdge(edgeInfo);
