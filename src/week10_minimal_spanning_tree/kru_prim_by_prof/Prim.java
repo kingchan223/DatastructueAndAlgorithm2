@@ -4,49 +4,48 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class Prim extends WGraphInList {
-    int [] d  ;   // distance;
-    int r = -1;   // start node
-    HashSet<String> S, V ;
+    int [] dist  ;   // distance;
+    int startIdx = -1;   // start node
+    HashSet<String> passedVertex, allVertex ;
 
     public Prim(int max) {
         super(max);
     }
 
     public void init(String start) {
-        d = new int [maxNumber];
-        S = new HashSet<>();
-        V = new HashSet<>();
+        dist = new int [numOfV];
+        passedVertex = new HashSet<>();
+        allVertex = new HashSet<>();
 
-        for (String s : vertices )
-            V.add(s);
-        r = vertices.indexOf(start);
-        Arrays.fill(d, 9999);
-        d[r]=0;
+        //그래프의 모든 정점을 allVertex 에 담기
+        allVertex.addAll(vertices);
+        startIdx = vertices.indexOf(start);
+        Arrays.fill(dist, 9999);
+        dist[startIdx]=0;
     }
 
     public void MST() {
-
-        while(S.size()<maxNumber) {
-            String u = extractMin(diff(V,S));  // diff(V,S) == V-S
-            S.add(u);
+        while(passedVertex.size()<numOfV) {
+            String u = extractMin(diff(allVertex,passedVertex));  // diff(V,S) == V-S
+            passedVertex.add(u);
             System.out.println(">>> "+u+" is selected.");
             for (String v : adjacent(u)) {  // L(u) == adjacent(u)
-                HashSet<String> temp = diff(V,S);
+                HashSet<String> temp = diff(allVertex,passedVertex);
                 int wuv = getWeight(u, v);
-                int dv = d[vertices.indexOf(v)];
+                int dv = dist[vertices.indexOf(v)];
                 if (temp.contains(v) &&  wuv<dv)
-                    d[vertices.indexOf(v)] = wuv ;
+                    dist[vertices.indexOf(v)] = wuv ;
             }
         }
-        for (int i=0; i<maxNumber; i++)
-            System.out.print(vertices.get(i)+"("+d[i]+")");
+        for (int i=0; i<numOfV; i++)
+            System.out.print(vertices.get(i)+"("+dist[i]+")");
         System.out.println();
-
     }
 
     private int getWeight(String u, String v) {
         return getEdge(u, v).weight;
     }
+
     private HashSet<String> diff(HashSet<String> s1, HashSet<String> s2) {
         HashSet<String> result = s1;
         for (String s : s2)
@@ -58,13 +57,18 @@ public class Prim extends WGraphInList {
         String minVertex = null;
         int min = 9999;;
         for (String s : diff) {
-            if (d[vertices.indexOf(s)] < min) {
+            if (dist[vertices.indexOf(s)] < min) {
                 minVertex = s;
-                min = d[vertices.indexOf(s)];
+                min = dist[vertices.indexOf(s)];
             }
         }
         return minVertex;
     }
 
-}
+    public static class Edge{
+        String from;
+        String to;
 
+
+    }
+}

@@ -126,7 +126,6 @@ public class AstarSP {
 //            if(this.weight == that.weight) return 0;
 //            return (int) (this.weight - that.weight);
 //        }
-
         @Override
         public String toString() {
             return "Vertex{" +

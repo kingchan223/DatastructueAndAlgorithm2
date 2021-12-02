@@ -2,7 +2,7 @@ package week13;
 
 import java.util.ArrayList;
 
-public class AstarPuzzle {
+public class AstarPuzzle3 {
     private static final double INF = 999_999_999;
     int[][] nowPuzzle;
     int[][] goalPuzzle;
@@ -10,8 +10,12 @@ public class AstarPuzzle {
     ArrayList<Integer> open;
     ArrayList<Integer> closed;
     ArrayList<Integer> path;
+    private static final int[] dr = { 0, 0, -1, 1};
+    private static final int[] dc = {-1, 1,  0, 0};
+    private static final String[] direction = {"L","R","U","D"};
 
-    public AstarPuzzle(int[][] nowPuzzle, int[][] goalPuzzle) {
+
+    public AstarPuzzle3(int[][] nowPuzzle, int[][] goalPuzzle) {
         this.nowPuzzle = nowPuzzle;
         this.goalPuzzle = goalPuzzle;
         init();
@@ -37,51 +41,80 @@ public class AstarPuzzle {
         return true;
     }
 
+    public int[][] copy(int[][] ogPuzzle){
+        int[][] copied = new int[3][3];
+        for(int i=0; i<3; i++)
+            for(int j=0; j<3; j++)
+                copied[i][j] = ogPuzzle[i][j];
+
+        return copied;
+    }
+
     public void algo(){
         showPuzzle(nowPuzzle);
-
         double nowGx = 0;
         while(true) {
+            double[] fxArr = {INF, INF, INF, INF};
+            Point[] points = {null, null, null, null};
+            for(int i=0; i<4; i++){
+                int[][] tempPuzzle = copy(nowPuzzle);
+                int[][] movedPuzzle = move(tempPuzzle, nowPoint, Direction.valueOf(direction[i]));
+                fxArr[i] = f(movedPuzzle, nowGx);
+                points[i] = new Point(fxArr[i], Direction.valueOf(direction[i]));
+            }
 
-            int[][] tempPuzzle = new int[3][3];
-            for(int i=0; i<3; i++)
-                for(int j=0; j<3; j++)
-                    tempPuzzle[i][j]=nowPuzzle[i][j];
-
-            int[][] moveL = move(tempPuzzle, nowPoint, Direction.L);
-            int[][] moveR = move(tempPuzzle, nowPoint, Direction.R);
-            int[][] moveU = move(tempPuzzle, nowPoint, Direction.U);
-            int[][] moveD = move(tempPuzzle, nowPoint, Direction.D);
-
-            double L = f(moveL, nowGx);
-            Point pointL = new Point(L, Direction.L);
-            double R = f(moveR, nowGx);
-            Point pointR = new Point(R, Direction.R);
-            double U = f(moveU, nowGx);
-            Point pointU = new Point(U, Direction.U);
-            double D = f(moveD, nowGx);
-            Point pointD = new Point(D, Direction.D);
-            Point point = extract(pointL, pointR, pointU, pointD);
+            Point point = extract(points);
 
             if (point.d == Direction.L) {
                 nowPoint = new Point(nowPoint.row, nowPoint.col - 1);
-                nowPuzzle = moveL;
+                nowPuzzle = move(nowPuzzle, nowPoint, Direction.L);
             }
             else if (point.d == Direction.R) {
                 nowPoint = new Point(nowPoint.row, nowPoint.col + 1);
-                nowPuzzle = moveR;
+                nowPuzzle = move(nowPuzzle, nowPoint, Direction.R);
             }
             else if (point.d == Direction.U) {
                 nowPoint = new Point(nowPoint.row - 1, nowPoint.col);
-                nowPuzzle = moveU;
+                nowPuzzle = move(nowPuzzle, nowPoint, Direction.U);
             }
             else{// (point.d == Direction.U) {
                 nowPoint = new Point(nowPoint.row + 1, nowPoint.col);
-                nowPuzzle = moveD;
+                nowPuzzle = move(nowPuzzle, nowPoint, Direction.D);
             }
             showPuzzle(nowPuzzle);
             if (checkSuccess(nowPuzzle)) break;
         }
+    }
+
+    public int[][] move(int[][] nowPuzzle, Point p, Direction d){
+        if(!validate(p, d)) return null;
+        switch(d){
+            case L:{//row = 0, col = 1
+                int t = nowPuzzle[p.row][p.col-1];
+                nowPuzzle[p.row][p.col-1] = nowPuzzle[p.row][p.col];
+                nowPuzzle[p.row][p.col] = t;
+                break;
+            }
+            case R:{
+                int t = nowPuzzle[p.row][p.col + 1];
+                nowPuzzle[p.row][p.col+1] = nowPuzzle[p.row][p.col];
+                nowPuzzle[p.row][p.col] = t;
+                break;
+            }
+            case U:{
+                int t = nowPuzzle[p.row-1][p.col];
+                nowPuzzle[p.row-1][p.col] = nowPuzzle[p.row][p.col];
+                nowPuzzle[p.row][p.col] = t;
+                break;
+            }
+            case D:{
+                int t = nowPuzzle[p.row+1][p.col];
+                nowPuzzle[p.row+1][p.col] = nowPuzzle[p.row][p.col];
+                nowPuzzle[p.row][p.col] = t;
+                break;
+            }
+        }
+        return nowPuzzle;
     }
 
     private void showPuzzle(int[][] nowPuzzle) {
@@ -94,61 +127,21 @@ public class AstarPuzzle {
         System.out.println("----------");
     }
 
-    private Point extract(Point pointL, Point pointR, Point pointU, Point pointD) {
+    private Point extract(Point[] points) {
         Point temp;
-        if(pointL.weight <= pointR.weight) temp = pointL;
-        else temp = pointR;
+        if(points[0].weight <= points[1].weight) temp = points[0];
+        else temp = points[1];
 
-        if(temp.weight <= pointU.weight) temp = temp;
-        else temp = pointU;
-
-        if(temp.weight <= pointD.weight) temp = temp;
-        else temp = pointD;
-
+        if(temp.weight > points[2].weight) temp = points[2];
+        if(temp.weight > points[3].weight) temp = points[3];
         return temp;
     }
-
 
     public boolean validate(Point p, Direction d){
-        if(d==Direction.L) return p.col != 0;
-        else if(d==Direction.R) return p.col != 2;
-        else if(d==Direction.U) return p.row != 0;
+        if(d== Direction.L) return p.col != 0;
+        else if(d== Direction.R) return p.col != 2;
+        else if(d== Direction.U) return p.row != 0;
         else return p.row != 2;
-    }
-
-    public int[][] move(int[][] nowPuzzle, Point p, Direction d){
-        int[][] temp = new int[3][3];
-        for(int i=0; i<3; i++)
-            for(int j=0; j<3; j++)
-                temp[i][j]=nowPuzzle[i][j];
-        if(!validate(p, d)) return null;
-        switch(d){
-            case L:{//row = 0, col = 1
-                int t = temp[p.row][p.col-1];
-                temp[p.row][p.col-1] = temp[p.row][p.col];
-                temp[p.row][p.col] = t;
-                break;
-            }
-            case R:{
-                int t = temp[p.row][p.col + 1];
-                temp[p.row][p.col+1] = temp[p.row][p.col];
-                temp[p.row][p.col] = t;
-                break;
-            }
-            case U:{
-                int t = temp[p.row-1][p.col];
-                temp[p.row-1][p.col] = temp[p.row][p.col];
-                temp[p.row][p.col] = t;
-                break;
-            }
-            case D:{
-                int t = temp[p.row+1][p.col];
-                temp[p.row+1][p.col] = temp[p.row][p.col];
-                temp[p.row][p.col] = t;
-                break;
-            }
-        }
-        return temp;
     }
 
     //매력함수 + 휴리스틱함수
@@ -156,9 +149,10 @@ public class AstarPuzzle {
         if(movedPuzzle==null) return INF;
         return g(nowGx)+h(movedPuzzle);
     }
+
     //매력 함수
     private double g(double nowGx){
-        return nowGx+1;
+        return nowGx;
     }
 
     //휴리스틱 함수
@@ -211,7 +205,7 @@ public class AstarPuzzle {
                 {1, 8, 4},
                 {7, 6, 5}};
 
-        AstarPuzzle aStar = new AstarPuzzle(start, goal);
+        AstarPuzzle3 aStar = new AstarPuzzle3(start, goal);
         aStar.algo();
     }
 }

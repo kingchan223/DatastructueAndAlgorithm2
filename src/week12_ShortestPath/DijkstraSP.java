@@ -18,10 +18,10 @@ public class DijkstraSP extends WGraphInList {
     }
 
     public void init(String start) {
-        d = new int [maxNumber];
+        d = new int [numOfV];
         S = new HashSet<>();
         V = new HashSet<>();
-        prev = new String[maxNumber];
+        prev = new String[numOfV];
 
         for (String s : vertices )
             V.add(s);
@@ -31,7 +31,7 @@ public class DijkstraSP extends WGraphInList {
     }
 
     public void shortestPath() {
-        while(S.size()<maxNumber) {
+        while(S.size()<numOfV) {
             String u = extractMin(diff(V,S));  // diff(V,S) == V-S
             S.add(u);
             System.out.println(">>> "+u+" is selected.");
@@ -49,14 +49,14 @@ public class DijkstraSP extends WGraphInList {
                 }
             }
         }
-        for (int i=0; i<maxNumber; i++)
+        for (int i=0; i<numOfV; i++)
             System.out.print(vertices.get(i)+"("+d[i]+")");
         System.out.println();
 
     }
 
     public void showShortestPath(){
-        for (int i = 0; i < maxNumber; i++) {
+        for (int i = 0; i < numOfV; i++) {
             System.out.println(prev[i]+" => " +vertices.get(i) +"(가중치:"+d[i]+")");
         }
     }

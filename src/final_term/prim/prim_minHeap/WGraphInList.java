@@ -1,4 +1,4 @@
-package week10_minimal_spanning_tree.kru_prim_by_prof;
+package final_term.prim.prim_minHeap;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,17 +10,28 @@ public class WGraphInList {
     protected ArrayList<LinkedList<EdgeElement>> adjacentList ;
     protected int numOfV = 0;
 
-    public class EdgeElement {
+    public static class EdgeElement {
         public String source ;
         public String destination ;
         public int weight ;
+
+        public String getSource() {
+            return source;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
 
         public EdgeElement (String s, String d, int w){
             source = s;
             destination = d;
             weight = w;
         }
-
         public String toString() {
             return source+"->"+destination+"("+weight+")";
         }
@@ -66,7 +77,6 @@ public class WGraphInList {
 
         adjacentList.get(f).add(new EdgeElement(from, to, w));
         adjacentList.get(t).add(new EdgeElement(to, from, w));
-
     }
 
     public void deleteVertex(String s) {

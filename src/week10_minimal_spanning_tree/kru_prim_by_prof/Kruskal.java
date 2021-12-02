@@ -20,7 +20,7 @@ public class Kruskal extends WGraphInList {
 
 
     public void init() {
-        for (int i=0; i<maxNumber;i++) {
+        for (int i=0; i<numOfV;i++) {
             parent.add(vertices.get(i)); // MakeSet
         }
     }
@@ -63,7 +63,7 @@ public class Kruskal extends WGraphInList {
 
     public void MST() {
 
-        while(T.size()<maxNumber-1) {
+        while(T.size()<numOfV-1) {
             EdgeElement euv = Q.remove(0);
 
             if (findSet(euv.source)!=findSet(euv.destination)) {
