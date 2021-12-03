@@ -23,7 +23,6 @@ public class MSTmain {
 
         System.out.println("\nAdjacent Set of "+"서울");
         System.out.println(myG.adjacent("서울"));
-
         System.out.println("\nPrim Algorithm starts from "+"서울");
 
         myG.init("서울");
