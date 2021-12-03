@@ -9,8 +9,7 @@ public class MSTmain {
         Prim myG = new Prim(vertices.length);
 
         myG.createGraph("Prim-Test Graph");
-        for (int i = 0; i<graphEdges.length; i++)
-            myG.insertEdge(vertices[graphEdges[i][0]],vertices[graphEdges[i][1]], graphEdges[i][2]);
+        for (int[] graphEdge : graphEdges) myG.insertEdge(vertices[graphEdge[0]], vertices[graphEdge[1]], graphEdge[2]);
         myG.showGraph();
 
         myG.deleteVertex("서울");
@@ -28,6 +27,7 @@ public class MSTmain {
 
         myG.init("서울");
         myG.MST();
+//-------------------------------------------------------------------------------------------------
 
         Kruskal myK = new Kruskal(vertices.length);
         myK.createGraph("Kruscal-Test Graph");

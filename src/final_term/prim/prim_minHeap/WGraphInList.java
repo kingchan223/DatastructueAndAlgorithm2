@@ -10,17 +10,17 @@ public class WGraphInList {
     protected ArrayList<LinkedList<EdgeElement>> adjacentList ;
     protected int numOfV = 0;
 
-    public static class EdgeElement {
-        public String source ;
-        public String destination ;
+    public static class EdgeElement implements Comparable<EdgeElement>{
+        public String from ;
+        public String to ;
         public int weight ;
 
         public String getSource() {
-            return source;
+            return from;
         }
 
         public String getDestination() {
-            return destination;
+            return to;
         }
 
         public int getWeight() {
@@ -28,12 +28,25 @@ public class WGraphInList {
         }
 
         public EdgeElement (String s, String d, int w){
-            source = s;
-            destination = d;
+            from = s;
+            to = d;
             weight = w;
         }
         public String toString() {
-            return source+"->"+destination+"("+weight+")";
+            return from+"->"+to+"("+weight+")";
+        }
+
+        @Override
+        public int compareTo(EdgeElement that) {
+            if(this.weight == that.weight) return 0;
+            return this.weight-that.weight;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            EdgeElement that = (EdgeElement) obj;
+            if(this.from.equals(that.from) && this.to.equals(that.to)) return true;
+            return this.from.equals(that.to) && this.to.equals(that.from);
         }
     }
 
@@ -56,7 +69,7 @@ public class WGraphInList {
         for (int i=0; i<vertices.size();i++){
             System.out.print(vertices.get(i)+"  ");
             for (EdgeElement s : adjacentList.get(i))
-                System.out.print(" => "+ s.destination +"("+s.weight+")");
+                System.out.print(" => "+ s.to +"("+s.weight+")");
             System.out.println();
         }
     }
@@ -105,7 +118,7 @@ public class WGraphInList {
         int t = vertices.indexOf(to);
         if (f>=0 && t>=0) {
             for (EdgeElement e : adjacentList.get(f))
-                if (to==e.destination) {
+                if (to==e.to) {
                     return e;
                 }
         }
@@ -123,7 +136,7 @@ public class WGraphInList {
         int index = vertices.indexOf(s);
         if (index>=0) {
             for (EdgeElement e : adjacentList.get(index))
-                result.add(e.destination);
+                result.add(e.to);
         }
         return result;
     }
