@@ -39,6 +39,7 @@ public class MSTmain {
 
         myK.init();
         myK.MST();
+        System.out.println("myK.cnt:"+myK.cnt);
 
     }
 }

@@ -15,5 +15,6 @@ public class MSTmain {
         System.out.println("\nKruskal Algorithm");
         myK.init();
         myK.MST();
+        System.out.println("myK.cnt:"+myK.cnt);
     }
 }

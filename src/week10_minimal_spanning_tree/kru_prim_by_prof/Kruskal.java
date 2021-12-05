@@ -10,7 +10,7 @@ public class Kruskal extends WGraphInList {
     ArrayList<String> parent;
     HashSet<EdgeElement> T ;
     LinkedList<EdgeElement> Q;
-
+    public int cnt = 0;
     public Kruskal(int max) {
         super(max);
         parent = new ArrayList<>() ;
@@ -75,6 +75,7 @@ public class Kruskal extends WGraphInList {
     }
 
     private String findSet(String s) {
+        cnt++;
         String p= parent.get(vertices.indexOf(s));
         if (p==s)
             return s;
