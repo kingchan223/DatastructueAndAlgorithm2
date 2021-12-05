@@ -14,8 +14,8 @@ public class Kruskal extends WGraphInList {
         super(max);
         parent = new ArrayList<>();
         rank = new ArrayList<>();
-        Q = new LinkedList<EdgeElement>();
         T = new HashSet<>();
+        Q = new LinkedList<EdgeElement>();
     }
 
     public void init() {
@@ -103,8 +103,10 @@ public class Kruskal extends WGraphInList {
         int di = vertices.indexOf(d);
         int si = vertices.indexOf(s);
 
-        if(rank.get(di) > rank.get(si)) parent.set(vertices.indexOf(s), parent.get(vertices.indexOf(d)));
-        else if(rank.get(di) < rank.get(si)) parent.set(vertices.indexOf(d), parent.get(vertices.indexOf(s)));
+        if(rank.get(di) > rank.get(si))
+            parent.set(vertices.indexOf(s), parent.get(vertices.indexOf(d)));
+        else if(rank.get(di) < rank.get(si))
+            parent.set(vertices.indexOf(d), parent.get(vertices.indexOf(s)));
         else//(rank.get(di) == rank.get(si)) //rank 가 같다면 d를 s에 붙인다. 그리고 s의 rank 를 1 올려준다.
         {
             parent.set(vertices.indexOf(d), parent.get(vertices.indexOf(s)));

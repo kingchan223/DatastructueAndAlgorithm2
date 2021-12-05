@@ -1,18 +1,20 @@
-package week12_ShortestPath;
+package final_term.dijkstra;
 
-import week10_minimal_spanning_tree.kru_prim_by_prof.WGraphInList;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 
-public class DijkstraSP extends WGraphInList {
+public class DijkstraMinHeap  extends WGraphInList {
+    public static final int INF = 999_999_999;
     int [] d  ;   // distance;
     int r = -1;   // start node
     HashSet<String> S, V ;
+    PriorityQueue<Vertex> verticesP;
 
     //특정 정점의 이전 노드(경로를 기억하기 위해 필요하다.)
     String [] prev;
-    public DijkstraSP(int max) {
+    public DijkstraMinHeap(int max) {
         super(max);
     }
 
@@ -26,22 +28,30 @@ public class DijkstraSP extends WGraphInList {
         r = vertices.indexOf(start);
         Arrays.fill(d, 9999);
         d[r]=0;
+        verticesP = new PriorityQueue<>();
+        verticesP.add(new Vertex(start, 0));
+        for (String name : vertices) {
+            if(name.equals(start)) continue;
+            verticesP.add(new Vertex(name, INF));
+        }
     }
 
     public void shortestPath() {
         while(S.size()<numOfV) {
-            String u = extractMin(diff(V,S));  // diff(V,S) == V-S
+            String u = extractMin();  // diff(V,S) == V-S
             S.add(u);
             System.out.println(">>> "+u+" is selected.");
             for (String v : adjacent(u)) {  // L(u) == adjacent(u)
                 HashSet<String> temp = diff(V,S);
-
                 int wuv = getWeight(u, v);
                 int dv = d[vertices.indexOf(v)];
                 int du = d[vertices.indexOf(u)];
 
                 if (temp.contains(v) &&  (du+wuv) < dv){
                     d[vertices.indexOf(v)] = du + wuv ;
+                    verticesP.remove(new Vertex(v));
+                    Vertex vertex = new Vertex(v, du + wuv);
+                    verticesP.add(vertex);
                     //이전에 어떤 정점을 거쳤는지 알려준다.
                     prev[vertices.indexOf(v)] = u;
                 }
@@ -69,16 +79,9 @@ public class DijkstraSP extends WGraphInList {
         return result;
     }
 
-    private String extractMin(HashSet<String> diff) {
-        String minVertex = null;
-        int min = 9999;;
-        for (String s : diff) {
-            if (d[vertices.indexOf(s)] < min) {
-                minVertex = s;
-                min = d[vertices.indexOf(s)];
-            }
-        }
-        return minVertex;
+    private String extractMin() {
+        Vertex minV = verticesP.poll();
+        return minV.getName();
     }
 
     public static void main(String[] args) {
@@ -86,7 +89,7 @@ public class DijkstraSP extends WGraphInList {
         int [][] graphEdges = { {0, 1, 11 }, {0, 2, 8}, {0, 3, 9}, {1, 3, 13},
                 {1, 6, 8}, {2, 4, 10}, {3, 4, 5}, {3, 5, 12}, {5, 6, 7} };
 
-        DijkstraSP dsSP = new DijkstraSP(vertices.length);
+        DijkstraMinHeap dsSP = new DijkstraMinHeap(vertices.length);
 
         dsSP.createGraph("Dijkstra-Test Graph");
         for (int i = 0; i<graphEdges.length; i++)
@@ -98,5 +101,35 @@ public class DijkstraSP extends WGraphInList {
         dsSP.init("서울");
         dsSP.shortestPath();
         dsSP.showShortestPath();
+    }
+
+    public static class Vertex implements Comparable<Vertex>{
+        public String name ;
+        public int weight ;
+
+        public Vertex(String name) {
+            this.name = name;
+        }
+        public Vertex (String name, int w){
+            this.name = name;
+            this.weight = w;
+        }
+        public String getName() {
+            return name;
+        }
+        public int getWeight() {
+            return weight;
+        }
+        @Override
+        public int compareTo(Vertex that) {
+            if(this.weight == that.weight) return 0;
+            return this.weight-that.weight;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            Vertex that = (Vertex) obj;
+            if(this.name.equals(that.name)) return true;
+            return false;
+        }
     }
 }

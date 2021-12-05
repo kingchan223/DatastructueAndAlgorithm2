@@ -32,7 +32,7 @@ public class Dijkstra {
 
     }
 
-    private class Edge{
+    private static class Edge{
         int to;
         int weight;
 
