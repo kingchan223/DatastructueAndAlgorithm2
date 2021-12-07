@@ -9,7 +9,7 @@ public class Dijkstra {
     private static final int INF = 999_999_999;
     int numOfVertex;
     ArrayList<LinkedList<Edge>> edges;
-    boolean visited[];
+    boolean[] visited;
     int[] minWeight;
     int start;
 

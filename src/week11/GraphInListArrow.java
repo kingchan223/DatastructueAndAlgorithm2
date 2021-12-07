@@ -8,12 +8,12 @@ public class GraphInListArrow {
 
     protected ArrayList<String> vertices ;
     protected ArrayList<LinkedList<String>> adjacentList ;
-    protected int verNum;
+    protected int nOfVertices;
     protected boolean [] visited ;
 
-    public GraphInListArrow(int verNum) {
-        this.verNum = verNum ;
-        visited = new boolean [verNum];
+    public GraphInListArrow(int nOfVertices) {
+        this.nOfVertices = nOfVertices ;
+        visited = new boolean [nOfVertices];
         createGraph();
     }
 
@@ -83,6 +83,4 @@ public class GraphInListArrow {
         }
         return result;
     }
-
-
 }

@@ -56,7 +56,7 @@ public class GraphInMatrix {
         adjacentMatrix[t][f] = 1 ;
     }
 
-    public void deleteVertex(String s) {
+    public void deleteVertex(String s) {//matrix에서 정점을 삭제한다. 그러면 간선도 삭제된다.
         int index = vertices.indexOf(s);
         if (index>=0) {
             int n = vertices.size();

@@ -18,7 +18,7 @@ public class TopologicalSort extends GraphInMatrix {
         int f = vertices.indexOf(from);
         int t = vertices.indexOf(to);
 
-        adjacentMatrix[f][t] = 1;
+        adjacentMatrix[f][t] = 1;//유향 그래프
 //        adjacentMatrix[t][f] = 1;  deleted
     }
     // override
@@ -37,8 +37,8 @@ public class TopologicalSort extends GraphInMatrix {
         int nOfVertices = vertices.size();
 
         for (int i = 0; i < nOfVertices; i++) {
-            A[i] = getNextNode();
-            deleteVertex(A[i]);
+            A[i] = getNextNode();//진입간선이 0인 정점을 A[i]에 저장
+            deleteVertex(A[i]);//그리고 진입간선이 0인 정점을 matrix 그래프에서 삭제한다.(정점이 삭제되면 간선도 삭제된다.)
             showGraph();
         }
 
@@ -48,8 +48,9 @@ public class TopologicalSort extends GraphInMatrix {
         System.out.println();
     }
 
-    private String getNextNode(){
+    private String getNextNode(){//진입간선이 0인 정점을 반환해준다.
         for (int i = 0; i < vertices.size(); i++) {
+
             int tempSum = 0;
             for(int j=0; j<vertices.size(); j++)
                 tempSum+=adjacentMatrix[j][i];
@@ -59,21 +60,22 @@ public class TopologicalSort extends GraphInMatrix {
         return null;
     }
 
-    //Recursive한 방법
+    //Recursive 한 방법
     public void TPSort2(){
-        LinkedList<String> R = new LinkedList<>();
+        LinkedList<String> R = new LinkedList<>();//R은 결과인 위상 정렬된 정점들이 순서대로 담긴다.
         boolean[] visited = new boolean[vertices.size()];
         Arrays.fill(visited, false);
         for(String s: vertices){
-            if(visited[vertices.indexOf(s)]==false)
+            if(!visited[vertices.indexOf(s)])
                 dfsTS(visited, s, R);
         }
     }
-
+    //계속 타고 들어가면 진입차수가 0이 아닌애가 나올 것이다. 더이상 탈 것이 없을 때까지 타고 들어가고
+    //얘는 결국 맨 뒤에 들어가게 된다.
     private LinkedList<String> dfsTS(boolean[] visited, String s, LinkedList<String> R){
         visited[vertices.indexOf(s)]=true;
         for(String x : adjacent(s))
-            if(visited[vertices.indexOf(x)]==false)
+            if(!visited[vertices.indexOf(x)])
                 dfsTS(visited, x, R);
         System.out.println(s + " is added a the first");
         R.addFirst(s);

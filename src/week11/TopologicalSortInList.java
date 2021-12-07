@@ -2,23 +2,23 @@ package week11;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class TopologicalSortInList extends GraphInListArrow {
 
     Queue<Integer> q;
-    int[] entryLevel;
+    int[] entryLevel;//진입차수
 
     public TopologicalSortInList(int maxN) {
         super(maxN);
-        entryLevel = new int[verNum];
-        for (int i=0; i<vertices.size(); i++) {
-            entryLevel[i] = 0;
-        }
+        entryLevel = new int[nOfVertices];
+        Arrays.fill(entryLevel, 0);
         q = new LinkedList<>();
     }
 
+    //큐를 사용한 방법///////////////////////////////////////////////////////////////////////
     public void TPSort1(){
         for (int i=0; i< vertices.size(); i++)
             if(entryLevel[i]==0) q.add(i);
@@ -38,6 +38,31 @@ public class TopologicalSortInList extends GraphInListArrow {
             System.out.println("=> "+A.get(i));
         System.out.println();
     }
+    ////////////////////////////////////////////////////////////////////////////////////
+
+
+    //Recursive 한 방법/////////////////////////////////////////////////////////////////////
+    public void TPSort2(){
+        LinkedList<String> R = new LinkedList<>();//R은 결과인 위상 정렬된 정점들이 순서대로 담긴다.
+        boolean[] visited = new boolean[vertices.size()];
+        Arrays.fill(visited, false);
+        for(String s: vertices){
+            if(!visited[vertices.indexOf(s)])
+                dfsTS(visited, s, R);
+        }
+    }
+    //계속 타고 들어가면 진입차수가 0이 아닌애가 나올 것이다. 더이상 탈 것이 없을 때까지 타고 들어가고
+    //얘는 결국 맨 뒤에 들어가게 된다.
+    private LinkedList<String> dfsTS(boolean[] visited, String s, LinkedList<String> R){
+        visited[vertices.indexOf(s)]=true;
+        for(String x : adjacent(s))
+            if(!visited[vertices.indexOf(x)])
+                dfsTS(visited, x, R);
+        System.out.println(s + " is added a the first");
+        R.addFirst(s);
+        return R;
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
 
     //override
     public void insertEdge(String from, String to) {
@@ -48,7 +73,7 @@ public class TopologicalSortInList extends GraphInListArrow {
         adjacentList.get(f).add(to);
         //진입차수 올리기
         int t = vertices.indexOf(to);
-        System.out.println(t);
+//        System.out.println(t);
         entryLevel[t] += 1;
     }
 
@@ -56,8 +81,8 @@ public class TopologicalSortInList extends GraphInListArrow {
     public void deleteVertex(String s) {
         int index = vertices.indexOf(s);
         if (index>=0) {
-            for (int i=0; i<vertices.size(); i++) {
-                deleteEdge(s, vertices.get(i));
+            for (String vertex : vertices) {
+                deleteEdge(s, vertex);
             }
         }
     }
@@ -83,12 +108,17 @@ public class TopologicalSortInList extends GraphInListArrow {
                 {0, 1}, {1, 3}, {1, 4}, {1, 5}, {2, 3}, {2, 4}, {3, 5}, {4, 5}
         };
         TopologicalSortInList myTO = new TopologicalSortInList(vertices.length);
-        for (int i = 0; i < graphEdges.length; i++)
-            myTO.insertEdge(vertices[graphEdges[i][0]], vertices[graphEdges[i][1]]);
-        for (int i = 0; i < vertices.length; i++)
-            myTO.insertVertex(vertices[i]);
+        for (int[] graphEdge : graphEdges) myTO.insertEdge(vertices[graphEdge[0]], vertices[graphEdge[1]]);
+        for (String vertex : vertices) myTO.insertVertex(vertex);
 
         System.out.println("Topological Sort1 : start");
         myTO.TPSort1();
+
+        TopologicalSortInList myTO2 = new TopologicalSortInList(vertices.length);
+        for (int[] graphEdge : graphEdges) myTO2.insertEdge(vertices[graphEdge[0]], vertices[graphEdge[1]]);
+        for (String vertex : vertices) myTO2.insertVertex(vertex);
+
+        System.out.println("Topological Sort2 Recursive : start");
+        myTO2.TPSort2();
     }
 }
