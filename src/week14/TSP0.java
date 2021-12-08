@@ -1,8 +1,9 @@
 package week14;
 
 import java.util.Arrays;
-//해밀턴에 각 경로에 대한 dist도 알려주는 알고리즘. 그리고 Min도 구한다만
-//모든 경로를 검사해봐야만 알 수 있다.
+
+//해밀턴에 각 경로에 대한 dist도 알려주는 알고리즘. 그리고 min도 알려주지만
+//만약 현재 검사하는 경로가 지금까지의 min보다 작으면 검사하지 않는다. 즉 시간복잡도는 여전히 N!이다.( 분기한정법을 사용해도 한계가 있다.)
 public class TSP0 {
     public static final int INF = 999_999_999;
 

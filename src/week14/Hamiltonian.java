@@ -11,7 +11,7 @@ public class Hamiltonian {
     }
 
     public void findAllPath(){
-        boolean[] visited = new boolean[adjacentMatrix.length];//정점 방문 여부
+        boolean[] visited = new boolean[adjacentMatrix.length] ;//정점 방문 여부
         int[] path = new int[adjacentMatrix.length];//정점 방문 경로
         int start = 0;//시작점은 0으로 한다.
         int vCount = 0;//vCount가 정점의 개수가 되면 모든 곳을 다 탐방한 것이다.
@@ -19,9 +19,9 @@ public class Hamiltonian {
         Arrays.fill(path, -1);
 
         visited[start] = true;//시작점은 한번 방문한 것으로 한다.
-        path[0] = start;
-        vCount++;
-        findAllPath(start, visited, path, start, vCount);
+        path[0] = start;//경로에 시작점을 넣어준다.
+        vCount++;//시작점을 추가했으므오 COUNT를 올려준다.
+        findAllPath(start, visited, path, start, vCount);//빙 돌아서 start한 곳까지 와야하므로 end에 start를 넣어준다.
     }
 
     private void findAllPath(int nowIndex, boolean[] visited, int[] path, int end, int count) {
