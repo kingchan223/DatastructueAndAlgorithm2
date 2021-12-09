@@ -70,6 +70,7 @@ public class TopologicalSort extends GraphInMatrix {
                 dfsTS(visited, s, R);
         }
     }
+
     //계속 타고 들어가면 진입차수가 0이 아닌애가 나올 것이다. 더이상 탈 것이 없을 때까지 타고 들어가고
     //얘는 결국 맨 뒤에 들어가게 된다.
     private LinkedList<String> dfsTS(boolean[] visited, String s, LinkedList<String> R){

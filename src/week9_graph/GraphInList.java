@@ -9,11 +9,12 @@ import java.util.LinkedList;
 public class GraphInList {
 
     protected ArrayList<String> vertices ;
-    protected ArrayList<LinkedList<Vertex>> adjacentList ;
+    protected ArrayList<LinkedList<String>> adjacentList ;
     protected int maxNumber = 0;
     protected boolean [] visited ;
 
     public GraphInList(int maxN) {
+        maxNumber = maxN;
         visited = new boolean [maxNumber];
         createGraph();
     }
@@ -30,16 +31,16 @@ public class GraphInList {
     private void showGraphInList() {
         for (int i=0; i<vertices.size();i++){
             System.out.print(vertices.get(i)+"  ");
-//            for (Vertex v : adjacentList.get(i))
-//                System.out.print(" => "+ s );
-//            System.out.println();
+            for (String s : adjacentList.get(i))
+                System.out.print(" => "+ s );
+            System.out.println();
         }
     }
 
     public void insertVertex(String s) {
         if (!vertices.contains(s)) {
             vertices.add(s);
-//            adjacentList.add(new LinkedList<String>());
+            adjacentList.add(new LinkedList<String>());
         }
     }
 
@@ -52,8 +53,8 @@ public class GraphInList {
 
         //adjacentList.get() : 정점을 가져오고
         //adjacentList.get().add() : 정점의 링크드 리스트에 추가한다.
-//        adjacentList.get(f).add(to);
-//        adjacentList.get(t).add(from);
+        adjacentList.get(f).add(to);
+        adjacentList.get(t).add(from);
     }
 
     public void deleteVertex(String s) {
@@ -86,10 +87,9 @@ public class GraphInList {
         HashSet<String> result= new HashSet<>();
 
         int index = vertices.indexOf(s);
-        if (index>=0) {
-//            for (String v : adjacentList.get(index))
-//                result.add(v);
-        }
+        if (index>=0)
+            result.addAll(adjacentList.get(index));
+
         return result;
     }
 
@@ -105,12 +105,12 @@ public class GraphInList {
     }
 
     private void DFSRecursion(String s) {
-//        int index = vertices.indexOf(s);
-//        visited[index]=true;
-//        System.out.println(s+" is visited ");
-//        for (Vertex v : adjacentList.get(index))
-//            if (!visited[vertices.indexOf(v)])
-//                DFSRecursion(v);
+        int index = vertices.indexOf(s);
+        visited[index]=true;
+        System.out.println(s+" is visited ");
+        for (String v : adjacentList.get(index))
+            if (!visited[vertices.indexOf(v)])
+                DFSRecursion(v);
     }
 
     public void BFS(String s) {
@@ -128,45 +128,14 @@ public class GraphInList {
         while (!que.isEmpty()) {
             String v = que.poll();
             int index = vertices.indexOf(v);
-//            for (String u : adjacentList.get(index)) {
-//                int ui = vertices.indexOf(u);
-//                if (!visited[ui]) {
-//                    visited[ui]=true;
-//                    System.out.println(u+" is visited ");
-//                    que.add(u);
-//                }
-//            }
-        }
-    }
-
-    public static class Vertex{
-        int name;
-        int weight;
-        public Vertex() {}
-        public Vertex(int name, int weight) {
-            this.name = name;
-            this.weight = weight;
-        }
-
-        public int getName() {
-            return name;
-        }
-
-        public void setName(int name) {
-            this.name = name;
-        }
-
-        public int getWeight() {
-            return weight;
-        }
-
-        public void setWeight(int weight) {
-            this.weight = weight;
-        }
-
-        @Override
-        public String toString() {
-            return "( "+this.getName()+", w:"+this.getWeight()+" )";
+            for (String u : adjacentList.get(index)) {
+                int ui = vertices.indexOf(u);
+                if (!visited[ui]) {
+                    visited[ui]=true;
+                    System.out.println(u+" is visited ");
+                    que.add(u);
+                }
+            }
         }
     }
 }

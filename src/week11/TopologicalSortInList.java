@@ -1,6 +1,5 @@
 package week11;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -24,26 +23,24 @@ public class TopologicalSortInList extends GraphInListArrow {
             if(entryLevel[i]==0) q.add(i);
 
         ArrayList<String> A = new ArrayList<>();
-        int nOfVertices = vertices.size();
 
         while(!q.isEmpty()){
             Integer now = q.poll();
-
             String nowStr = vertices.get(now);
             A.add(nowStr);
-            deleteVertex(nowStr);
+            deleteVertex(nowStr);//정점을 삭제하면 그와 연결된 간선들도 모두 삭제된다.
         }
 
-        for (int i = 0; i < nOfVertices; i++)
+        for (int i = 0; i < vertices.size(); i++)
             System.out.println("=> "+A.get(i));
         System.out.println();
     }
-    ////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////
 
 
     //Recursive 한 방법/////////////////////////////////////////////////////////////////////
     public void TPSort2(){
-        LinkedList<String> R = new LinkedList<>();//R은 결과인 위상 정렬된 정점들이 순서대로 담긴다.
+        LinkedList<String> R = new LinkedList<>();//R은 위상 정렬된 정점들이 결과로 저장된다.
         boolean[] visited = new boolean[vertices.size()];
         Arrays.fill(visited, false);
         for(String s: vertices){
@@ -51,16 +48,16 @@ public class TopologicalSortInList extends GraphInListArrow {
                 dfsTS(visited, s, R);
         }
     }
+
     //계속 타고 들어가면 진입차수가 0이 아닌애가 나올 것이다. 더이상 탈 것이 없을 때까지 타고 들어가고
     //얘는 결국 맨 뒤에 들어가게 된다.
-    private LinkedList<String> dfsTS(boolean[] visited, String s, LinkedList<String> R){
+    private void dfsTS(boolean[] visited, String s, LinkedList<String> R){
         visited[vertices.indexOf(s)]=true;
         for(String x : adjacent(s))
             if(!visited[vertices.indexOf(x)])
                 dfsTS(visited, x, R);
         System.out.println(s + " is added a the first");
-        R.addFirst(s);
-        return R;
+        R.addFirst(s);//반드시 addFirst 로 해야한다.
     }
     ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,7 +85,7 @@ public class TopologicalSortInList extends GraphInListArrow {
     }
 
     //override
-    public void deleteEdge(String from, String to) {
+    public void deleteEdge(String from, String to){
         int f = vertices.indexOf(from);
         int t = vertices.indexOf(to);
         if (f>=0 && t>=0) {

@@ -37,6 +37,8 @@ public class GraphBaseMain {
 
         myGM.BFS(vertices[0]);
         myGM.DFS(vertices[0]);
+        myGM.DFS2(vertices[0]);
+        myGM.BFS2(vertices[0]);
 
         ///////////////////////////////////////////////////////////////////
         System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -82,11 +84,11 @@ public class GraphBaseMain {
 
         GraphInArray myGA = new GraphInArray(maxNoVertex);
 
-        myGA.createGraph("TestGraph in Array");
+        myGA.createGraph("Test Graph in Array");
         myGA.showGraph();
 
-        for (int[] graphEdge : graphEdges)
-            myGA.insertEdge(vertices[graphEdge[0] - 1], vertices[graphEdge[1] - 1]);
+        for (int[] graphEdge2 : graphEdges)
+            myGA.insertEdge(vertices[graphEdge2[0] - 1], vertices[graphEdge2[1] - 1]);
         System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
         myGA.showGraph();
 
@@ -101,7 +103,6 @@ public class GraphBaseMain {
         myGA.insertEdge("승우", "동건");
         System.out.println("\n⬇️⬇️After add Edge 승우-동건⬇️⬇️");
         myGA.showGraph();
-
 
         System.out.println("\n⬇️⬇️Adjacent Set of "+"철수⬇️⬇️");
         System.out.println(myGA.adjacent("철수"));
@@ -118,8 +119,8 @@ public class GraphBaseMain {
         myGAA.createGraph("TestGraph in Array Arrow");
         myGAA.showGraph();
 
-        for (int[] graphEdge2 : graphEdges2)
-            myGA.insertEdge(vertices2[graphEdge2[0] - 1], vertices2[graphEdge2[1] - 1]);
+        for (int[] graphEdge : graphEdges)
+            myGAA.insertEdge(vertices[graphEdge[0] - 1], vertices[graphEdge[1] - 1]);
         System.out.println("\n⬇️⬇️After 모든 정점과 간선 추가 ⬇️⬇️");
         myGAA.showGraph();
 

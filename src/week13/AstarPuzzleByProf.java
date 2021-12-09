@@ -22,8 +22,7 @@ public class AstarPuzzleByProf {
     }
 
     public void ShortestPath() {
-        Q.add(current);
-
+        Q.add(current);//Q를 사용하여 최신 상태를 저장하는 좋은 방법
         while(!Q.isEmpty()) {
             State u = Q.get(0);
             Q.remove(0);
@@ -37,7 +36,7 @@ public class AstarPuzzleByProf {
             int min = INF;
 
             for (State v : adjacent) {
-                if (!visited(prev, v.matrix)) {//이전에 검사한 matrix가 아니라면
+                if (!visited(prev, v.matrix)) {//이전에 이미 검사한 matrix 가 아니라면
                     v.fVal=v.mCount+v.diffCount(target);
                     if (v.fVal<=min) {
                         min = v.fVal;
@@ -51,7 +50,7 @@ public class AstarPuzzleByProf {
         }
     }
 
-    //이전에 검사했던 matrix인지 check한다.
+    //이전에 검사했던 matrix 인지 check 한다.
     private boolean visited(ArrayList<int[][]> prev, int[][] matrix) {
         if (prev.size()==0) return false;
         else

@@ -10,7 +10,8 @@ public class WGraphInList {
     protected ArrayList<LinkedList<EdgeElement>> adjacentList ;
     protected int numOfV = 0;
 
-    public class EdgeElement {
+    public class
+    EdgeElement {
         public String source ;
         public String destination ;
         public int weight ;

@@ -28,12 +28,12 @@ public class DijkstraSP extends WGraphInList {
         d[r]=0;
     }
 
-    public void shortestPath() {
-        while(S.size()<numOfV) {
+    public void shortestPath(){
+        while(S.size()<numOfV){
             String u = extractMin(diff(V,S));  // diff(V,S) == V-S
             S.add(u);
             System.out.println(">>> "+u+" is selected.");
-            for (String v : adjacent(u)) {  // L(u) == adjacent(u)
+            for (String v : adjacent(u)){  // L(u) == adjacent(u)
                 HashSet<String> temp = diff(V,S);
 
                 int wuv = getWeight(u, v);
@@ -50,19 +50,19 @@ public class DijkstraSP extends WGraphInList {
         for (int i=0; i<numOfV; i++)
             System.out.print(vertices.get(i)+"("+d[i]+")");
         System.out.println();
-
     }
 
     public void showShortestPath(){
-        for (int i = 0; i < numOfV; i++) {
+        for (int i = 0; i < numOfV; i++){
             System.out.println(prev[i]+" => " +vertices.get(i) +"(가중치:"+d[i]+")");
         }
     }
 
-    private int getWeight(String u, String v) {
+    private int getWeight(String u, String v){
         return getEdge(u, v).weight;
     }
-    private HashSet<String> diff(HashSet<String> s1, HashSet<String> s2) {
+
+    private HashSet<String> diff(HashSet<String> s1, HashSet<String> s2){
         HashSet<String> result = s1;
         for (String s : s2)
             result.remove(s);
@@ -72,8 +72,8 @@ public class DijkstraSP extends WGraphInList {
     private String extractMin(HashSet<String> diff) {
         String minVertex = null;
         int min = 9999;;
-        for (String s : diff) {
-            if (d[vertices.indexOf(s)] < min) {
+        for (String s : diff){
+            if (d[vertices.indexOf(s)] < min){
                 minVertex = s;
                 min = d[vertices.indexOf(s)];
             }

@@ -10,19 +10,22 @@ public class WGraphInList {
     protected ArrayList<LinkedList<EdgeElement>> adjacentList ;
     protected int numOfV = 0;
 
-    public class EdgeElement {
+    public static class EdgeElement implements Comparable<EdgeElement>{
         public String source ;
         public String destination ;
         public int weight ;
-
         public EdgeElement (String s, String d, int w){
             source = s;
             destination = d;
             weight = w;
         }
-
         public String toString() {
-            return source+"->"+destination+"("+weight+")";
+            return source+"---"+destination+"("+weight+")";
+        }
+        @Override
+        public int compareTo(EdgeElement that) {
+            if(this.weight == that.weight) return 0;
+            return this.weight-that.weight;
         }
     }
 
@@ -66,7 +69,6 @@ public class WGraphInList {
 
         adjacentList.get(f).add(new EdgeElement(from, to, w));
         adjacentList.get(t).add(new EdgeElement(to, from, w));
-
     }
 
     public void deleteVertex(String s) {

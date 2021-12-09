@@ -15,7 +15,7 @@ public class GraphInArray {
         ArrayList<String> arrayEntry;
         private TableEntry(){
             arrSize = 0;
-            arrayEntry = null;
+            arrayEntry = new ArrayList<>();
         }
     }
 
@@ -47,7 +47,7 @@ public class GraphInArray {
     public void insertVertex(String s) {
         if (!vertices.contains(s)) {
             vertices.add(s);
-            adjacentArray.add(new TableEntry ());
+            adjacentArray.add(new TableEntry());
         }
     }
 
@@ -86,10 +86,8 @@ public class GraphInArray {
     }
 
     public boolean isEmpty() {
-        if (vertices.size()==0)
-            return true;
-        else
-            return false;
+        if (vertices.size()==0) return true;
+        else return false;
     }
 
     public  HashSet<String> adjacent(String s){

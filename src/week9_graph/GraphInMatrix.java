@@ -1,9 +1,6 @@
 package week9_graph;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashSet;
+import java.util.*;
 
 public class GraphInMatrix {
 
@@ -12,10 +9,14 @@ public class GraphInMatrix {
     protected int [][] adjacentMatrix ;
     protected int maxNumber = 0;
     protected boolean [] visited ;
+    protected boolean [] visited2 ;
+    protected boolean [] visited3 ;
 
     public GraphInMatrix(int maxN) {
         maxNumber = maxN ;
         visited = new boolean [maxNumber];
+        visited2 = new boolean [maxNumber];
+        visited3 = new boolean [maxNumber];
     }
 
     public void createGraph(String name) {
@@ -95,10 +96,8 @@ public class GraphInMatrix {
     }
 
     public boolean isEmpty() {
-        if (vertices.size()==0)
-            return true;
-        else
-            return false;
+        if (vertices.size()==0) return true;
+        else return false;
     }
 
     public  HashSet<String> adjacent(String s){
@@ -136,6 +135,19 @@ public class GraphInMatrix {
         }
     }
 
+    //하나짜리 DFS
+    public void DFS2(String startV){
+        if(!visited2[vertices.indexOf(startV)]){
+            visited2[vertices.indexOf(startV)] = true;
+            System.out.println(startV+" ^^ ");
+            for(int i=0; i<adjacentMatrix.length;i++){
+                if(adjacentMatrix[vertices.indexOf(startV)][i]!=0){
+                    DFS2(vertices.get(i));
+                }
+            }
+        }
+    }
+
     public void BFS(String s) {
         initVisited();
         System.out.println("\n *** BFS Iteration *** \n");
@@ -159,5 +171,27 @@ public class GraphInMatrix {
                 }
             }
         }
+    }
+
+    public void BFS2(String start){
+        Queue<String> q = new ArrayDeque<>();
+        q.add(start);
+        BFS2(q);
+    }
+
+    private void BFS2(Queue<String> q) {
+        Queue<String> nextQ = new ArrayDeque<>();
+        while(!q.isEmpty()){
+            String p = q.poll();
+            if(!visited3[vertices.indexOf(p)]){
+                visited3[vertices.indexOf(p)] = true;
+                System.out.println(p+" ~.~");
+            }
+            for(int i=0; i<adjacentMatrix.length; i++){
+                if (adjacentMatrix[vertices.indexOf(p)][i]==1 && !visited3[i])
+                    nextQ.add(vertices.get(i));
+            }
+        }
+        if(!nextQ.isEmpty()) BFS2(nextQ);
     }
 }

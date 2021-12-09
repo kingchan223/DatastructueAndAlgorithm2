@@ -12,9 +12,8 @@ public class MSTmain {
         for (int[] graphEdge : graphEdges) myK.insertEdge(vertices[graphEdge[0]], vertices[graphEdge[1]], graphEdge[2]);
         myK.showGraph();
 
-        System.out.println("\nKruskal Algorithm");
         myK.init();
         myK.MST();
-        System.out.println("myK.cnt:"+myK.cnt);
+        myK.hi();
     }
 }
